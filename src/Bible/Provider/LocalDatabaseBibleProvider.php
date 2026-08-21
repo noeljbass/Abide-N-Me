@@ -21,7 +21,9 @@ final class LocalDatabaseBibleProvider implements BibleProviderInterface
 
     public function getBooks(string $translationCode): array
     {
-        $query = $this->database->prepare('SELECT b.code, COALESCE(tb.provider_name,b.name) AS name, tb.chapter_count FROM translation_books tb JOIN translations t ON t.id=tb.translation_id JOIN books b ON b.id=tb.book_id WHERE t.code=:translation ORDER BY (SELECT cb.position FROM canon_books cb WHERE cb.canon_id=t.canon_id AND cb.book_id=b.id)');
+        // Provider names are often USFM abbreviations (for example, TOB and PSA).
+        // Reader-facing controls should consistently use the canonical full name.
+        $query = $this->database->prepare('SELECT b.code, b.name, tb.chapter_count FROM translation_books tb JOIN translations t ON t.id=tb.translation_id JOIN books b ON b.id=tb.book_id WHERE t.code=:translation ORDER BY (SELECT cb.position FROM canon_books cb WHERE cb.canon_id=t.canon_id AND cb.book_id=b.id)');
         $query->execute(['translation' => $translationCode]);
         return $query->fetchAll();
     }

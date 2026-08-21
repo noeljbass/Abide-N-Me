@@ -38,7 +38,12 @@ final class UsfmPackage
                 $text=$zip->getFromIndex($i); if ($text===false || !mb_check_encoding($text,'UTF-8')) throw new RuntimeException('A USFM entry is unreadable or not UTF-8.');
                 $code=$this->extractId($text,$name);
                 $canonical=$this->manifest['book_codes'] ?? BookCatalog::CATHOLIC_CODES;
-                if (!in_array($code,$canonical,true) && in_array($code,self::ANCILLARY_CODES,true) && !preg_match('/^\\\\c\s+\d+/m',$text)) continue;
+                if (!in_array($code,$canonical,true)) {
+                    $hasChapters=(bool)preg_match('/^\\\\c\s+\d+/m',$text);
+                    if (in_array($code,self::ANCILLARY_CODES,true) && !$hasChapters) continue;
+                    if ($hasChapters) throw new RuntimeException("Unexpected chapter-bearing USFM identifier {$code} in {$name}.");
+                    throw new RuntimeException("Unexpected non-book USFM identifier {$code} in {$name}.");
+                }
                 $book=$this->parse($text,$name); if(isset($books[$book['code']])) throw new RuntimeException('Conflicting USFM book code: '.$book['code']);
                 $books[$book['code']]=$book;
             }

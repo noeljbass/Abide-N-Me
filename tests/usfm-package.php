@@ -12,31 +12,31 @@ if ($archive === false) throw new RuntimeException('Could not create the test ar
 
 $zip = new ZipArchive();
 if ($zip->open($archive, ZipArchive::OVERWRITE) !== true) throw new RuntimeException('Could not open the test archive.');
-foreach (['00-FRT.usfm', '01-GEN.usfm'] as $filename) {
+foreach (['00-FRT.usfm', '01-GEN.usfm', '02-EXO.usfm'] as $filename) {
     $zip->addFile($fixtureDirectory . '/' . $filename, $filename);
 }
 $zip->close();
 
 $manifest = [
     'source_identifier' => 'fixture',
-    'book_codes' => ['GEN'],
+    'book_codes' => ['GEN', 'EXO'],
     'package' => ['sha256' => hash_file('sha256', $archive)],
 ];
 
 try {
     $report = (new UsfmPackage($archive, $manifest))->inspect();
-    assert(array_keys($report['books']) === ['GEN']);
-    assert(array_column($report['entries'], 'name') === ['00-FRT.usfm', '01-GEN.usfm']);
-    assert($report['summary']['entries'] === 2);
-    assert($report['summary']['books'] === 1);
+    assert(array_keys($report['books']) === ['EXO', 'GEN']);
+    assert(array_column($report['entries'], 'name') === ['00-FRT.usfm', '01-GEN.usfm', '02-EXO.usfm']);
+    assert($report['summary']['entries'] === 3);
+    assert($report['summary']['books'] === 2);
 
     $incompleteManifest = $manifest;
-    $incompleteManifest['book_codes'][] = 'EXO';
+    $incompleteManifest['book_codes'][] = 'LEV';
     try {
         (new UsfmPackage($archive, $incompleteManifest))->inspect();
         throw new RuntimeException('An incomplete manifest canon was accepted.');
     } catch (RuntimeException $exception) {
-        assert(str_contains($exception->getMessage(), 'Missing: EXO'));
+        assert(str_contains($exception->getMessage(), 'Missing: LEV'));
     }
 
     $zip = new ZipArchive();
@@ -48,7 +48,7 @@ try {
         (new UsfmPackage($archive, $manifest))->inspect();
         throw new RuntimeException('A chapter-bearing non-canonical identifier was accepted.');
     } catch (RuntimeException $exception) {
-        assert(str_contains($exception->getMessage(), 'unexpected: FRT'));
+        assert(str_contains($exception->getMessage(), 'Unexpected chapter-bearing USFM identifier FRT'));
     }
 } finally {
     unlink($archive);

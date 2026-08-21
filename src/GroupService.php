@@ -48,7 +48,7 @@ final class GroupService
     public function members(string $publicId, int $userId): array
     {
         $group = $this->authorizedGroup($publicId, $userId);
-        $query = $this->database->prepare("SELECT u.public_id AS id, u.name, gm.role, gm.joined_at FROM group_members gm JOIN users u ON u.id = gm.user_id WHERE gm.group_id = :group_id AND gm.status = 'active' ORDER BY FIELD(gm.role, 'owner', 'admin', 'member'), u.name");
+        $query = $this->database->prepare("SELECT u.public_id AS id, u.name, u.avatar_data AS avatar, gm.role, gm.joined_at FROM group_members gm JOIN users u ON u.id = gm.user_id WHERE gm.group_id = :group_id AND gm.status = 'active' ORDER BY FIELD(gm.role, 'owner', 'admin', 'member'), u.name");
         $query->execute(['group_id' => $group['internal_id']]);
         return $query->fetchAll();
     }

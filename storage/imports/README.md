@@ -20,3 +20,16 @@ supplemental books. The KJV manifest declares those identifiers in
 `excluded_book_codes`, so their omission from the Protestant 66-book import is
 explicit and auditable. Any chapter-bearing identifier that is neither in the
 canon nor that exclusion list still causes inspection to fail.
+
+Import the Catholic Edition of the World English Bible after applying migration
+007:
+
+```sh
+php bin/import-bible.php --source=eng-web-c --validate-only
+php bin/import-bible.php --source=eng-web-c
+```
+
+Its USFM identifiers `ESG` and `DAG` are mapped to this application's canonical
+`EST` and `DAN` records while their provider identifiers remain in the import
+metadata. See `docs/ionos-bible-import.md` for IONOS SSH, PHP CLI, migration, and
+production import commands.

@@ -9,10 +9,14 @@ $app = require dirname(__DIR__) . '/src/bootstrap.php';
 use FeedMySheep\Bible\UsfmPackage;
 use FeedMySheep\Database;
 
+$manifest = json_decode((string) file_get_contents(dirname(__DIR__) . '/database/bible-sources.json'), true, 512, JSON_THROW_ON_ERROR);
 $source = 'engDRA';
 foreach ($argv as $argument) if (str_starts_with($argument, '--source=')) $source = substr($argument, 9);
-$manifest = json_decode((string) file_get_contents(dirname(__DIR__) . '/database/bible-sources.json'), true, 512, JSON_THROW_ON_ERROR);
-if (!isset($manifest[$source])) { fwrite(STDERR, "Unknown Bible source: {$source}.\n"); exit(1); }
+if (in_array('--help', $argv, true)) {
+    echo "Usage: php bin/import-bible.php [--source=SOURCE] [--validate-only]\n\nAvailable sources:\n  " . implode("\n  ", array_keys($manifest)) . "\n";
+    exit;
+}
+if (!isset($manifest[$source])) { fwrite(STDERR, "Unknown Bible source: {$source}. Available sources: " . implode(', ', array_keys($manifest)) . ".\n"); exit(1); }
 $record = $manifest[$source];
 
 try {
@@ -36,12 +40,13 @@ try {
         $insertVerse = $pdo->prepare('INSERT INTO bible_verses (translation_id,book_id,chapter,verse,verse_suffix,text) VALUES (?,?,?,?,?,?)');
         foreach ($report['books'] as $code => $book) {
             if (!isset($bookIds[$code])) throw new RuntimeException("Canonical database mapping missing for {$code}.");
-            $metadata = json_encode(['source_file'=>$book['filename'],'provider_book_id'=>$code,'numbering'=>$report['numbering']], JSON_THROW_ON_ERROR);
-            $insertBook->execute([$translation,$bookIds[$code],$code,$code,$book['chapter_count'],$metadata]);
+            $providerCode = $book['provider_code'] ?? $code;
+            $metadata = json_encode(['source_file'=>$book['filename'],'provider_book_id'=>$providerCode,'numbering'=>$report['numbering']], JSON_THROW_ON_ERROR);
+            $insertBook->execute([$translation,$bookIds[$code],$providerCode,$providerCode,$book['chapter_count'],$metadata]);
             foreach ($book['chapters'] as $chapter => $verses) foreach ($verses as $verse) $insertVerse->execute([$translation,$bookIds[$code],$chapter,$verse['verse'],$verse['suffix'],$verse['text']]);
         }
         $insert = $pdo->prepare('INSERT INTO bible_imports (translation_id,source_identifier,package_filename,package_sha256,source_url,book_count,chapter_count,verse_count,validation_report) VALUES (?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE imported_at=CURRENT_TIMESTAMP,book_count=VALUES(book_count),chapter_count=VALUES(chapter_count),verse_count=VALUES(verse_count),validation_report=VALUES(validation_report)');
-        $insert->execute([$translation,$source,$record['package']['filename'],$report['sha256'],$record['package']['url'],$report['summary']['books'],$report['summary']['chapters'],$report['summary']['verses'],json_encode($compact,JSON_THROW_ON_ERROR)]);
+        $insert->execute([$translation,$record['source_identifier'],$record['package']['filename'],$report['sha256'],$record['package']['url'],$report['summary']['books'],$report['summary']['chapters'],$report['summary']['verses'],json_encode($compact,JSON_THROW_ON_ERROR)]);
         $pdo->prepare('UPDATE translations SET is_active=TRUE WHERE id=?')->execute([$translation]);
         $pdo->commit();
     } catch (Throwable $error) { if ($pdo->inTransaction()) $pdo->rollBack(); throw $error; }

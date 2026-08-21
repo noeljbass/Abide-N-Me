@@ -1,0 +1,20 @@
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^(?:config|database|src|storage)(?:/|$) - [F,L,NC]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^join/[A-Za-z0-9-]+/?$ index.html [L]
+</IfModule>
+
+<FilesMatch "(^\.|\.(?:sql|log|ini|env|bak))$">
+  Require all denied
+</FilesMatch>
+
+<IfModule !mod_authz_core.c>
+  <FilesMatch "(^\.|\.(?:sql|log|ini|env|bak))$">
+    Order allow,deny
+    Deny from all
+  </FilesMatch>
+</IfModule>

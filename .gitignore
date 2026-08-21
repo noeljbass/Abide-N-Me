@@ -1,0 +1,8 @@
+/config/local.php
+/config/config.php
+/storage/logs/*.log
+/storage/cache/*
+/storage/imports/*
+!/storage/logs/.gitkeep
+!/storage/cache/.gitkeep
+!/storage/imports/README.md

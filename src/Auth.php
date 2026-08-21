@@ -29,7 +29,7 @@ final class Auth
     public function attempt(string $email, string $password): ?array
     {
         $statement = $this->database->prepare(
-            "SELECT id, public_id, name, email, password_hash, avatar_data, email_verified_at FROM users WHERE email = :email AND status = 'active' LIMIT 1"
+            "SELECT u.id, u.public_id, u.name, u.email, u.password_hash, u.avatar_data, u.email_verified_at, t.code AS last_translation, b.code AS last_book, us.last_chapter FROM users u LEFT JOIN user_settings us ON us.user_id=u.id LEFT JOIN translations t ON t.id=us.preferred_translation_id LEFT JOIN books b ON b.id=us.last_book_id WHERE u.email = :email AND u.status = 'active' LIMIT 1"
         );
         $statement->execute(['email' => $email]);
         $user = $statement->fetch();
@@ -61,7 +61,7 @@ final class Auth
     public function findById(int $id): ?array
     {
         $statement = $this->database->prepare(
-            "SELECT id, public_id, name, email, avatar_data, email_verified_at FROM users WHERE id = :id AND status = 'active' LIMIT 1"
+            "SELECT u.id, u.public_id, u.name, u.email, u.avatar_data, u.email_verified_at, t.code AS last_translation, b.code AS last_book, us.last_chapter FROM users u LEFT JOIN user_settings us ON us.user_id=u.id LEFT JOIN translations t ON t.id=us.preferred_translation_id LEFT JOIN books b ON b.id=us.last_book_id WHERE u.id = :id AND u.status = 'active' LIMIT 1"
         );
         $statement->execute(['id' => $id]);
         $user = $statement->fetch();
@@ -90,6 +90,7 @@ final class Auth
             'email' => $user['email'],
             'avatar' => $user['avatar_data'] ?? null,
             'email_verified' => $user['email_verified_at'] !== null,
+            'reader' => ($user['last_translation'] ?? null) && ($user['last_book'] ?? null) && ($user['last_chapter'] ?? null) ? ['translation' => $user['last_translation'], 'book' => $user['last_book'], 'chapter' => (int) $user['last_chapter']] : null,
         ];
     }
 

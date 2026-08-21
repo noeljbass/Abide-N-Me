@@ -27,6 +27,8 @@ CREATE TABLE users (
 CREATE TABLE user_settings (
     user_id BIGINT UNSIGNED PRIMARY KEY,
     preferred_translation_id SMALLINT UNSIGNED NULL,
+    last_book_id SMALLINT UNSIGNED NULL,
+    last_chapter SMALLINT UNSIGNED NULL,
     text_size TINYINT UNSIGNED NOT NULL DEFAULT 100,
     theme ENUM('system','light','dark') NOT NULL DEFAULT 'system',
     reminder_enabled BOOLEAN NOT NULL DEFAULT FALSE,

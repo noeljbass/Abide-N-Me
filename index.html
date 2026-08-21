@@ -31,53 +31,53 @@
 
     <main id="main-content" tabindex="-1">
       <section class="view is-active" id="today" data-view="today" aria-labelledby="today-title">
-        <p class="eyebrow">Friday, August 21</p>
-        <h1 id="today-title">Good morning, Alice</h1>
-        <article class="reading-card">
-          <div class="card-heading">
-            <div>
-              <p class="eyebrow">Family Bible Plan</p>
-              <p class="muted">Today · Day 4</p>
-            </div>
-            <span class="day-badge" aria-label="Fourth day">04</span>
-          </div>
-          <div class="passage">
-            <p class="passage-book">The Gospel according to John</p>
-            <h2>John 1:19–34</h2>
-            <p class="reading-meta"><span>8 min read</span><span aria-hidden="true">•</span><span>6 min listen</span></p>
-          </div>
-          <div class="primary-actions">
-            <button class="button button-primary" type="button" data-demo-message="The Bible reader will be connected in Iteration 6."><span aria-hidden="true">▤</span> Read</button>
-            <button class="button button-secondary" type="button" data-demo-message="Bible audio will be connected in Iteration 9."><span aria-hidden="true">▶</span> Listen</button>
-          </div>
-        </article>
-
-        <section class="section-block" aria-labelledby="progress-title">
-          <div class="section-heading">
-            <div><p class="eyebrow">Together today</p><h2 id="progress-title">3 of 5 completed</h2></div>
-            <span class="progress-count">60%</span>
-          </div>
-          <div class="progress-track" role="progressbar" aria-label="Group completion" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"><span style="width:60%"></span></div>
-          <ul class="member-list" aria-label="Member progress">
-            <li><span class="avatar avatar-sage">M</span><span>Mom</span><span class="complete" aria-label="Completed">✓</span></li>
-            <li><span class="avatar avatar-gold">D</span><span>Dad</span><span class="complete" aria-label="Completed">✓</span></li>
-            <li><span class="avatar avatar-blue">C</span><span>Calvin</span><span class="complete" aria-label="Completed">✓</span></li>
-            <li><span class="avatar avatar-rose">A</span><span>Alice</span><span class="status-muted">Not yet</span></li>
-            <li><span class="avatar avatar-stone">C</span><span>Charles</span><span class="status-muted">Not yet</span></li>
-          </ul>
+        <p class="eyebrow" data-today-date>Today</p>
+        <h1 id="today-title" data-today-greeting>Today’s Scripture</h1>
+        <div class="reader-status" data-today-status role="status" aria-live="polite">Loading today’s reading…</div>
+        <div data-today-assignments hidden></div>
+        <section class="placeholder-card" data-today-empty hidden>
+          <span class="placeholder-icon" aria-hidden="true">☀</span>
+          <h2>No reading scheduled today</h2>
+          <p>Rest, catch up, or open the Bible to read any chapter.</p>
+          <a class="button button-secondary" href="#bible">Open the Bible</a>
         </section>
-        <button class="notes-link" type="button" data-demo-message="Group discussion will be built in Iteration 11."><span aria-hidden="true">◌</span><span><strong>2 group notes</strong><small>Discuss this passage together</small></span><span aria-hidden="true">›</span></button>
       </section>
 
-      <section class="view" id="bible" data-view="bible" aria-labelledby="bible-title" hidden>
-        <p class="eyebrow">Catholic Bible</p><h1 id="bible-title">Read Scripture</h1>
-        <div class="placeholder-card"><span class="placeholder-icon" aria-hidden="true">☷</span><h2>Bible reader</h2><p>Choose from the full 73-book Catholic canon and read in a calm, focused view.</p><button class="button button-primary" type="button" data-demo-message="Catholic book navigation arrives with the approved Bible data layer.">Choose a book</button></div>
+      <section class="view bible-view" id="bible" data-view="bible" aria-labelledby="bible-title" hidden>
+        <div class="reader-heading"><div><p class="eyebrow">Catholic Bible</p><h1 id="bible-title">Read Scripture</h1></div><button class="icon-button" type="button" data-reader-audio aria-label="Listen to this chapter">▶</button></div>
+        <form class="reader-controls" data-reader-controls>
+          <label><span>Translation</span><select name="translation" data-translation aria-label="Bible translation"></select></label>
+          <label><span>Book</span><select name="book" data-book aria-label="Bible book"></select></label>
+          <label><span>Chapter</span><select name="chapter" data-chapter aria-label="Chapter"></select></label>
+        </form>
+        <div class="reader-status" data-reader-status role="status" aria-live="polite">Loading Scripture…</div>
+        <article class="scripture" data-scripture aria-label="Bible chapter" hidden></article>
+        <aside class="verse-actions" data-verse-actions hidden aria-label="Selected verse actions"><strong data-selected-reference></strong><div><button type="button" data-reader-action="highlight">Highlight</button><button type="button" data-reader-action="bookmark">Bookmark</button><button type="button" data-reader-action="note">Private note</button></div><label class="note-editor" data-note-editor hidden>Private note<textarea data-note-body maxlength="5000"></textarea><button type="button" data-save-note>Save note</button></label><p data-reader-action-status role="status"></p></aside>
+        <nav class="chapter-navigation" aria-label="Chapter navigation"><button class="button button-secondary" type="button" data-previous-chapter>← Previous</button><button class="button button-secondary" type="button" data-next-chapter>Next →</button></nav>
       </section>
 
       <section class="view" id="plans" data-view="plans" aria-labelledby="plans-title" hidden>
         <p class="eyebrow">Reading together</p><h1 id="plans-title">Plans</h1>
-        <div class="compact-card"><div><span class="card-kicker">Active plan</span><h2>Family Bible Plan</h2><p>Gospel of John · Day 4 of 21</p></div><span class="ring">19%</span></div>
-        <div class="placeholder-card"><span class="placeholder-icon" aria-hidden="true">＋</span><h2>Create a reading plan</h2><p>Automatic and manual plan builders will make it simple to read any part of Scripture together.</p><button class="button button-secondary" type="button" data-demo-message="Plan creation will be built in Iteration 7.">New plan</button></div>
+        <div data-plans-list></div>
+        <div class="placeholder-card" data-plans-empty><span class="placeholder-icon" aria-hidden="true">＋</span><h2>Create a reading plan</h2><p>Choose books for an evenly distributed schedule, or enter each day exactly.</p></div>
+        <details class="plan-builder" data-plan-builder><summary class="button button-primary">New plan</summary>
+          <form data-plan-form>
+            <p class="form-message" data-plan-message role="alert" hidden></p>
+            <label>Group<select name="group_id" required data-plan-group></select></label>
+            <label>Plan name<input name="name" required minlength="2" maxlength="150" placeholder="Gospel of John together"></label>
+            <label>Description <small>Optional</small><textarea name="description" maxlength="5000"></textarea></label>
+            <fieldset><legend>Build mode</legend><label><input type="radio" name="mode" value="automatic" checked> Automatic</label><label><input type="radio" name="mode" value="manual"> Manual</label></fieldset>
+            <label>Start date<input type="date" name="start_date" required></label>
+            <input type="hidden" name="timezone" data-plan-timezone value="UTC">
+            <section data-automatic-fields>
+              <fieldset><legend>Books</legend><p id="books-help" class="field-help">Select one or more books.</p><div class="book-options" data-plan-books aria-describedby="books-help"></div></fieldset>
+              <label>Duration in calendar days<input type="number" name="duration_days" min="1" max="730" value="30"></label>
+              <fieldset><legend>Reading days</legend><div class="weekday-options" data-weekdays></div></fieldset>
+            </section>
+            <section data-manual-fields hidden><div data-manual-days></div><button class="button button-secondary" type="button" data-add-plan-day>+ Add day</button></section>
+            <button class="button button-primary" type="submit">Create and assign plan</button>
+          </form>
+        </details>
       </section>
 
       <section class="view" id="group" data-view="group" aria-labelledby="group-title" hidden>
@@ -116,6 +116,16 @@
       <a href="#group" data-route="group"><span class="nav-icon" aria-hidden="true">♙</span><span>Group</span></a>
     </nav>
   </div>
+  <dialog class="audio-dialog" data-audio-dialog aria-labelledby="audio-title">
+    <div class="audio-sheet">
+      <div class="audio-heading"><div><p class="eyebrow">Listen</p><h2 id="audio-title" data-audio-title>Scripture audio</h2></div><button class="icon-button" type="button" data-audio-close aria-label="Close audio player">×</button></div>
+      <label>Audio version<select data-audio-version hidden></select></label>
+      <audio controls preload="metadata">Your browser does not support Scripture audio.</audio>
+      <div class="audio-options"><label>Playback speed<select data-audio-rate><option value="0.75">0.75×</option><option value="1" selected>1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></label></div>
+      <p data-audio-status role="status" aria-live="polite">Choose a chapter to listen.</p>
+      <p class="audio-attribution" data-audio-attribution></p>
+    </div>
+  </dialog>
   <div class="toast" role="status" aria-live="polite" aria-atomic="true" hidden></div>
   <script type="module" src="assets/js/app.js"></script>
 </body>

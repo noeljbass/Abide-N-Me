@@ -27,3 +27,5 @@ After the base schema, import migration files from `database/migrations/` in
 numeric order. `002_catholic_canon.sql` seeds the 73-book Catholic canon and
 inactive metadata for the approved public-domain Douay-Rheims source. It does
 not import Bible text or activate the translation.
+
+Migration `003_bible_text_import.sql` adds verified package provenance. After applying it, run `php bin/import-bible.php` from the project root to import and activate DRA1899. Migration `004_passage_public_ids.sql` must be applied before using progress APIs; it assigns non-sequential public identifiers to existing and future plan passages.

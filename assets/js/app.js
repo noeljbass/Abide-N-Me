@@ -2,11 +2,19 @@ import { initRouter } from './router.js';
 import { initPwa } from './pwa.js';
 import { initAuth } from './auth.js';
 import { initGroups } from './groups.js';
+import { initBibleReader } from './bible.js';
+import { initPlans } from './plans.js';
+import { initToday } from './today.js';
+import { initAudio } from './audio.js';
 
 initRouter();
 initPwa();
 initAuth();
 initGroups();
+initBibleReader();
+initPlans();
+initToday();
+initAudio();
 
 const toast = document.querySelector('.toast');
 let toastTimer;

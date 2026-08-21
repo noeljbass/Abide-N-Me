@@ -1,0 +1,24 @@
+<?php
+declare(strict_types=1);
+use FeedMySheep\HttpRequest;
+use FeedMySheep\JsonResponse;
+use FeedMySheep\RateLimiter;
+use FeedMySheep\Session;
+use FeedMySheep\Validator;
+use FeedMySheep\Auth;
+require __DIR__ . '/_init.php';
+HttpRequest::requireMethod('POST');
+Session::requireCsrf();
+$input = HttpRequest::json();
+$email = Validator::email($input['email'] ?? null);
+$password = is_string($input['password'] ?? null) ? $input['password'] : '';
+if ($email === null || $password === '') JsonResponse::error('validation_failed', 'Enter a valid email and password.', 422);
+$pdo = $database->connection();
+$auth = new Auth($pdo);
+(new RateLimiter($pdo))->hit('login', HttpRequest::clientKey() . ':' . $email, 8, 900);
+$user = $auth->attempt($email, $password);
+if ($user === null) JsonResponse::error('invalid_credentials', 'The email or password is incorrect.', 401);
+$lookup = $pdo->prepare('SELECT id FROM users WHERE public_id = :public_id');
+$lookup->execute(['public_id' => $user['id']]);
+Session::login((int) $lookup->fetchColumn());
+JsonResponse::success(['user' => $user, 'csrf_token' => Session::csrfToken()]);

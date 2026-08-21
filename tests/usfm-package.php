@@ -32,6 +32,36 @@ try {
     assert($report['books']['GEN']['chapters'][1][1]['text'] === 'In the beginning.');
     assert($report['books']['EXO']['chapters'][1][1]['text'] === 'These are the names.');
 
+    $mappedManifest = $manifest;
+    $mappedManifest['book_codes'] = ['GEN', 'DAN'];
+    $mappedManifest['book_code_map'] = ['DAG' => 'DAN'];
+    $zip = new ZipArchive();
+    if ($zip->open($archive) !== true) throw new RuntimeException('Could not reopen the test archive.');
+    $zip->deleteName('02-EXO.usfm');
+    $zip->addFromString('02-DAG.usfm', "\\id DAG Daniel with additions\n\\c 1\n\\v 1 A mapped verse.\n");
+    $zip->close();
+    $mappedManifest['package']['sha256'] = hash_file('sha256', $archive);
+    $mappedReport = (new UsfmPackage($archive, $mappedManifest))->inspect();
+    assert(array_keys($mappedReport['books']) === ['DAN', 'GEN']);
+    assert($mappedReport['books']['DAN']['provider_code'] === 'DAG');
+
+    $mappedManifest['empty_verse_policy'] = 'omit';
+    $zip = new ZipArchive();
+    if ($zip->open($archive) !== true) throw new RuntimeException('Could not reopen the test archive.');
+    $zip->deleteName('02-DAG.usfm');
+    $zip->addFromString('02-DAG.usfm', "\\id DAG Daniel with additions\n\\c 1\n\\v 1 \\f + \\ft An omitted verse.\\f*\n\\v 2 A retained verse.\n");
+    $zip->close();
+    $mappedManifest['package']['sha256'] = hash_file('sha256', $archive);
+    $mappedReport = (new UsfmPackage($archive, $mappedManifest))->inspect();
+    assert(array_keys($mappedReport['books']['DAN']['chapters'][1]) === [2]);
+
+    $zip = new ZipArchive();
+    if ($zip->open($archive) !== true) throw new RuntimeException('Could not reopen the test archive.');
+    $zip->deleteName('02-DAG.usfm');
+    $zip->addFile($fixtureDirectory . '/02-EXO.usfm', '02-EXO.usfm');
+    $zip->close();
+    $manifest['package']['sha256'] = hash_file('sha256', $archive);
+
     $incompleteManifest = $manifest;
     $incompleteManifest['book_codes'][] = 'LEV';
     try {

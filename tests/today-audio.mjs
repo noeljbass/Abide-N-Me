@@ -1,7 +1,10 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 const source=await readFile(new URL('../assets/js/today.js',import.meta.url),'utf8');
+const audioSource=await readFile(new URL('../assets/js/audio.js',import.meta.url),'utf8');
 assert.match(source,/api\(`bible\/chapter\.php\?translation=\$\{encodeURIComponent\(translation\)\}&book=\$\{encodeURIComponent\(book\)\}&chapter=\$\{chapter\}`\)/);
 assert.match(source,/text:data\.verses\.map\(item=>item\.text\)\.join\(' '\)/);
 assert.match(source,/detail:\{translation,book,chapter,/);
+assert.match(source,/user\?\.reader\?\.translation\|\|'DRA1899'/);
+assert.match(audioSource,/catch\(error\)\{if\(context\?\.text\)enableSpeech\(\)/);
 console.log('today audio tests passed');

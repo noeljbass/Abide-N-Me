@@ -29,7 +29,7 @@ final class Auth
     public function attempt(string $email, string $password): ?array
     {
         $statement = $this->database->prepare(
-            "SELECT id, public_id, name, email, password_hash, email_verified_at FROM users WHERE email = :email AND status = 'active' LIMIT 1"
+            "SELECT id, public_id, name, email, password_hash, avatar_data, email_verified_at FROM users WHERE email = :email AND status = 'active' LIMIT 1"
         );
         $statement->execute(['email' => $email]);
         $user = $statement->fetch();
@@ -61,7 +61,7 @@ final class Auth
     public function findById(int $id): ?array
     {
         $statement = $this->database->prepare(
-            "SELECT id, public_id, name, email, email_verified_at FROM users WHERE id = :id AND status = 'active' LIMIT 1"
+            "SELECT id, public_id, name, email, avatar_data, email_verified_at FROM users WHERE id = :id AND status = 'active' LIMIT 1"
         );
         $statement->execute(['id' => $id]);
         $user = $statement->fetch();
@@ -75,12 +75,20 @@ final class Auth
         return $this->findById($id);
     }
 
+    public function updateProfile(int $id, string $name, ?string $avatarData): array
+    {
+        $statement = $this->database->prepare('UPDATE users SET name = :name, avatar_data = :avatar_data WHERE id = :id');
+        $statement->execute(['name' => $name, 'avatar_data' => $avatarData, 'id' => $id]);
+        return $this->findById($id);
+    }
+
     private function publicUser(array $user): array
     {
         return [
             'id' => $user['public_id'],
             'name' => $user['name'],
             'email' => $user['email'],
+            'avatar' => $user['avatar_data'] ?? null,
             'email_verified' => $user['email_verified_at'] !== null,
         ];
     }
@@ -93,4 +101,3 @@ final class Auth
         return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($bytes), 4));
     }
 }
-

@@ -14,6 +14,7 @@ CREATE TABLE users (
     name VARCHAR(100) NOT NULL,
     email VARCHAR(254) NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
+    avatar_data MEDIUMTEXT NULL,
     email_verified_at TIMESTAMP NULL,
     status ENUM('pending','active','disabled') NOT NULL DEFAULT 'pending',
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

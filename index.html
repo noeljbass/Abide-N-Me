@@ -45,7 +45,7 @@
       </section>
 
       <section class="view bible-view" id="bible" data-view="bible" aria-labelledby="bible-title" hidden>
-        <div class="reader-heading"><div><p class="eyebrow">Catholic Bible</p><h1 id="bible-title">Read Scripture</h1></div><button class="icon-button" type="button" data-reader-audio aria-label="Listen to this chapter">▶</button></div>
+        <div class="reader-heading"><h1 id="bible-title">Read Scripture</h1><button class="icon-button" type="button" data-reader-audio aria-label="Listen to this chapter">▶</button></div>
         <form class="reader-controls" data-reader-controls>
           <label><span>Translation</span><select name="translation" data-translation aria-label="Bible translation"></select></label>
           <label><span>Book</span><select name="book" data-book aria-label="Bible book"></select></label>
@@ -123,6 +123,7 @@
       <div class="audio-heading"><div><p class="eyebrow">Listen</p><h2 id="audio-title" data-audio-title>Scripture audio</h2></div><button class="icon-button" type="button" data-audio-close aria-label="Close audio player">×</button></div>
       <label>Audio version<select data-audio-version hidden></select></label>
       <audio controls preload="metadata">Your browser does not support Scripture audio.</audio>
+      <button class="button button-primary" type="button" data-audio-read hidden>Read chapter aloud</button>
       <div class="audio-options"><label>Playback speed<select data-audio-rate><option value="0.75">0.75×</option><option value="1" selected>1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></label></div>
       <p data-audio-status role="status" aria-live="polite">Choose a chapter to listen.</p>
       <p class="audio-attribution" data-audio-attribution></p>

@@ -12,8 +12,6 @@ final class UsfmPackage
 {
     public const MAX_ENTRIES = 200;
     public const MAX_UNCOMPRESSED_BYTES = 30_000_000;
-    private const REQUIRED = ['TOB','JDT','WIS','SIR','BAR','1MA','2MA'];
-
     public function __construct(private readonly string $archive, private readonly array $manifest)
     {
     }
@@ -43,7 +41,7 @@ final class UsfmPackage
         } finally { $zip->close(); }
         $this->validate($books);
         ksort($books);
-        return ['source_identifier'=>'engDRA','sha256'=>$actual,'entries'=>$entries,'markers'=>['declared_usfm_version'=>null,'characteristic'=>'USFM without an explicit \\usfm declaration; uses id/h/toc/mt/c/v/p/q1 plus \\w character spans.'],'books'=>$books,'summary'=>['entries'=>count($entries),'books'=>count($books),'chapters'=>array_sum(array_column($books,'chapter_count')),'verses'=>array_sum(array_column($books,'verse_count')),'uncompressed_bytes'=>$total], 'numbering'=>['psalms'=>'Douay-Rheims/Vulgate numbering as supplied: 150 numbered psalms. Provider chapter numbers are retained.','esther'=>'Catholic additions integrated as Esther chapters 11–16; 16 chapters total.','daniel'=>'Prayer/Song in Daniel 3 and Susanna/Bel and the Dragon as chapters 13–14; 14 chapters total.','provider_mapping'=>'USFM book/chapter/verse identifiers retained in translation_books.numbering_metadata.']];
+        return ['source_identifier'=>$this->manifest['source_identifier'],'sha256'=>$actual,'entries'=>$entries,'markers'=>['declared_usfm_version'=>null],'books'=>$books,'summary'=>['entries'=>count($entries),'books'=>count($books),'chapters'=>array_sum(array_column($books,'chapter_count')),'verses'=>array_sum(array_column($books,'verse_count')),'uncompressed_bytes'=>$total], 'numbering'=>['provider_mapping'=>'USFM book/chapter/verse identifiers retained in translation_books.numbering_metadata.']];
     }
 
     private function parse(string $text,string $filename): array
@@ -69,12 +67,9 @@ final class UsfmPackage
 
     private function validate(array $books): void
     {
-        $canonical=BookCatalog::CATHOLIC_CODES;
+        $canonical=$this->manifest['book_codes'] ?? BookCatalog::CATHOLIC_CODES;
         $missing=array_values(array_diff($canonical,array_keys($books))); $extra=array_values(array_diff(array_keys($books),$canonical));
-        if(count($books)!==73 || $missing || $extra) throw new RuntimeException('Catholic canon validation failed. Missing: '.implode(',',$missing).'; unexpected: '.implode(',',$extra).'.');
-        foreach(self::REQUIRED as $code) if(!isset($books[$code])) throw new RuntimeException('Required deuterocanonical book missing: '.$code);
-        if($books['EST']['chapter_count']<16) throw new RuntimeException('Catholic Esther additions are missing.');
-        if($books['DAN']['chapter_count']<14 || !isset($books['DAN']['chapters'][3][24]) || !isset($books['DAN']['chapters'][3][90])) throw new RuntimeException('Catholic Daniel additions are missing.');
+        if(count($books)!==count($canonical) || $missing || $extra) throw new RuntimeException('Canon validation failed. Missing: '.implode(',',$missing).'; unexpected: '.implode(',',$extra).'.');
         if($books['PSA']['chapter_count']!==150) throw new RuntimeException('Unexpected Psalm chapter count.');
     }
 }

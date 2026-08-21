@@ -1,0 +1,15 @@
+{
+  "name": "Feed My Sheep",
+  "short_name": "Feed My Sheep",
+  "description": "Read and listen to Catholic Scripture together.",
+  "start_url": "./#today",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f3ea",
+  "theme_color": "#f7f3ea",
+  "orientation": "portrait-primary",
+  "icons": [
+    {"src":"assets/icons/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any"},
+    {"src":"assets/icons/icon-maskable.svg","sizes":"any","type":"image/svg+xml","purpose":"maskable"}
+  ]
+}

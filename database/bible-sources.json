@@ -167,11 +167,27 @@
       "JUD",
       "REV"
     ],
+    "excluded_book_codes": [
+      "TOB",
+      "JDT",
+      "ESG",
+      "WIS",
+      "SIR",
+      "BAR",
+      "S3Y",
+      "SUS",
+      "BEL",
+      "1MA",
+      "2MA",
+      "1ES",
+      "MAN",
+      "2ES"
+    ],
     "package": {
       "format": "USFM ZIP",
       "filename": "eng-kjv_usfm.zip",
       "url": "https://ebible.org/Scriptures/eng-kjv_usfm.zip",
-      "sha256": ""
+      "sha256": "1165788907a8bbe93c3299d89eb5134d942038e5dca2c0832beb13e8f72441d0"
     }
   }
 }

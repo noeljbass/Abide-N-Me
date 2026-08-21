@@ -41,15 +41,20 @@ try {
 
     $zip = new ZipArchive();
     if ($zip->open($archive) !== true) throw new RuntimeException('Could not reopen the test archive.');
-    $zip->addFromString('00-FRT.usfm', "\\id FRT Front matter\n\\c 1\n\\v 1 Unexpected chapter.\n");
+    $zip->addFromString('03-TOB.usfm', "\\id TOB Tobit\n\\c 1\n\\v 1 An explicitly excluded book.\n");
     $zip->close();
     $manifest['package']['sha256'] = hash_file('sha256', $archive);
     try {
         (new UsfmPackage($archive, $manifest))->inspect();
         throw new RuntimeException('A chapter-bearing non-canonical identifier was accepted.');
     } catch (RuntimeException $exception) {
-        assert(str_contains($exception->getMessage(), 'Unexpected chapter-bearing USFM identifier FRT'));
+        assert(str_contains($exception->getMessage(), 'Unexpected chapter-bearing USFM identifier TOB'));
     }
+
+    $manifest['excluded_book_codes'] = ['TOB'];
+    $report = (new UsfmPackage($archive, $manifest))->inspect();
+    assert(array_keys($report['books']) === ['EXO', 'GEN']);
+    assert(array_column($report['entries'], 'name') === ['00-FRT.usfm', '01-GEN.usfm', '02-EXO.usfm', '03-TOB.usfm']);
 } finally {
     unlink($archive);
 }

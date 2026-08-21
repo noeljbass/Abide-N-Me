@@ -14,3 +14,9 @@ KJV after applying migration 006 with:
 php bin/import-bible.php --source=eng-kjv --validate-only
 php bin/import-bible.php --source=eng-kjv
 ```
+
+The retained eBible KJV package also contains deuterocanonical and other
+supplemental books. The KJV manifest declares those identifiers in
+`excluded_book_codes`, so their omission from the Protestant 66-book import is
+explicit and auditable. Any chapter-bearing identifier that is neither in the
+canon nor that exclusion list still causes inspection to fail.

@@ -12,6 +12,7 @@ final class UsfmPackage
 {
     public const MAX_ENTRIES = 200;
     public const MAX_UNCOMPRESSED_BYTES = 30_000_000;
+    private const ANCILLARY_CODES = ['FRT', 'INT', 'BAK', 'CNC', 'GLO', 'TDX', 'NDX'];
     public function __construct(private readonly string $archive, private readonly array $manifest)
     {
     }
@@ -31,10 +32,20 @@ final class UsfmPackage
                 $stat=$zip->statIndex($i); $name=(string)$stat['name']; $size=(int)$stat['size'];
                 if ($name==='' || str_contains($name,"\0") || str_starts_with($name,'/') || preg_match('~(^|/)(\.\.?)(/|$)~',$name) || preg_match('~^[A-Za-z]:[\\\\/]~',$name)) throw new RuntimeException('Unsafe ZIP entry path detected.');
                 $total += $size; if ($total > self::MAX_UNCOMPRESSED_BYTES) throw new RuntimeException('ZIP uncompressed-size safety limit exceeded.');
-                if (!preg_match('/\.usfm$/i',$name) && !in_array($name,['copr.htm','keys.asc','gentium.css'],true)) throw new RuntimeException('Unexpected ZIP entry type: '.basename($name));
+                if (!preg_match('/\.usfm$/i',$name) && !in_array($name,['copr.htm','keys.asc','gentium.css','latin.css'],true)) throw new RuntimeException('Unexpected ZIP entry type: '.basename($name));
                 $entries[]=['name'=>$name,'bytes'=>$size];
                 if (!preg_match('/\.usfm$/i',$name)) continue;
                 $text=$zip->getFromIndex($i); if ($text===false || !mb_check_encoding($text,'UTF-8')) throw new RuntimeException('A USFM entry is unreadable or not UTF-8.');
+                $code=$this->extractId($text,$name);
+                $canonical=$this->manifest['book_codes'] ?? BookCatalog::CATHOLIC_CODES;
+                if (!in_array($code,$canonical,true)) {
+                    $excluded=$this->manifest['excluded_book_codes'] ?? [];
+                    if (in_array($code,$excluded,true)) continue;
+                    $hasChapters=(bool)preg_match('/^\\\\c\s+\d+/m',$text);
+                    if (in_array($code,self::ANCILLARY_CODES,true) && !$hasChapters) continue;
+                    if ($hasChapters) throw new RuntimeException("Unexpected chapter-bearing USFM identifier {$code} in {$name}.");
+                    throw new RuntimeException("Unexpected non-book USFM identifier {$code} in {$name}.");
+                }
                 $book=$this->parse($text,$name); if(isset($books[$book['code']])) throw new RuntimeException('Conflicting USFM book code: '.$book['code']);
                 $books[$book['code']]=$book;
             }
@@ -46,8 +57,7 @@ final class UsfmPackage
 
     private function parse(string $text,string $filename): array
     {
-        if(!preg_match('/^\\\\id\s+([0-9A-Z]{3})\b/m',$text,$m)) throw new RuntimeException("Missing USFM id in {$filename}.");
-        $code=$m[1]; $chapters=[]; $current=null;
+        $code=$this->extractId($text,$filename); $chapters=[]; $current=null;
         $parts=preg_split('/(?=^\\\\(?:c|v)\s+)/m',$text);
         foreach($parts as $part){
             if(preg_match('/^\\\\c\s+(\d+)/',$part,$x)){ $current=(int)$x[1]; $chapters[$current]??=[]; continue; }
@@ -65,11 +75,17 @@ final class UsfmPackage
         return ['code'=>$code,'filename'=>$filename,'chapter_count'=>count($chapters),'verse_count'=>array_sum(array_map('count',$chapters)),'chapters'=>$chapters];
     }
 
+    private function extractId(string $text,string $filename): string
+    {
+        if(!preg_match('/^\\\\id\s+([0-9A-Z]{3})\b/m',$text,$match)) throw new RuntimeException("Missing USFM id in {$filename}.");
+        return $match[1];
+    }
+
     private function validate(array $books): void
     {
         $canonical=$this->manifest['book_codes'] ?? BookCatalog::CATHOLIC_CODES;
         $missing=array_values(array_diff($canonical,array_keys($books))); $extra=array_values(array_diff(array_keys($books),$canonical));
         if(count($books)!==count($canonical) || $missing || $extra) throw new RuntimeException('Canon validation failed. Missing: '.implode(',',$missing).'; unexpected: '.implode(',',$extra).'.');
-        if($books['PSA']['chapter_count']!==150) throw new RuntimeException('Unexpected Psalm chapter count.');
+        if(in_array('PSA',$canonical,true) && $books['PSA']['chapter_count']!==150) throw new RuntimeException('Unexpected Psalm chapter count.');
     }
 }

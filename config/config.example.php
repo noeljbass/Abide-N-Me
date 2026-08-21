@@ -8,7 +8,7 @@ return [
     'app' => [
         'environment' => 'production',
         'debug' => false,
-        'base_url' => 'https://YOUR-DOMAIN.example',
+        'base_url' => 'https://abiden.me',
         'timezone' => 'UTC',
     ],
     // Leave disabled until the provider, filesets, and license are approved.

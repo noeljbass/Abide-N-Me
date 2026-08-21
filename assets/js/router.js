@@ -16,7 +16,7 @@ export function initRouter() {
       else link.removeAttribute('aria-current');
     });
 
-    document.title = `${route[0].toUpperCase()}${route.slice(1)} · Feed My Sheep`;
+    document.title = `${route[0].toUpperCase()}${route.slice(1)} · Abide N Me`;
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
 

@@ -7,8 +7,7 @@ use FeedMySheep\JsonResponse;
 require dirname(__DIR__) . '/src/bootstrap.php';
 
 JsonResponse::success([
-    'service' => 'Feed My Sheep API',
+    'service' => 'Abide N Me API',
     'status' => 'ok',
     'version' => 1,
 ]);
-

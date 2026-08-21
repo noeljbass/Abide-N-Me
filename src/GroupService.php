@@ -63,6 +63,13 @@ final class GroupService
         return ['code' => $code, 'group' => $this->formatGroup($group), 'expires_at' => $expiresAt];
     }
 
+    public function delete(string $publicId, int $userId): void
+    {
+        $group = $this->authorizedGroup($publicId, $userId, ['owner']);
+        $archive = $this->database->prepare('UPDATE groups SET archived_at = UTC_TIMESTAMP() WHERE id = :group_id AND archived_at IS NULL');
+        $archive->execute(['group_id' => $group['internal_id']]);
+    }
+
     public function previewInvite(string $code): ?array
     {
         $query = $this->database->prepare("SELECT g.name, g.description, gi.expires_at FROM group_invites gi JOIN groups g ON g.id = gi.group_id WHERE gi.code_hash = :hash AND gi.revoked_at IS NULL AND (gi.expires_at IS NULL OR gi.expires_at > UTC_TIMESTAMP()) AND (gi.max_uses IS NULL OR gi.use_count < gi.max_uses) AND g.archived_at IS NULL LIMIT 1");

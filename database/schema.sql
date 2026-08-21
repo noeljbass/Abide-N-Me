@@ -1,4 +1,4 @@
--- Feed My Sheep database foundation (MySQL 8.0+/MariaDB 10.5+)
+-- Abide N Me database foundation (MySQL 8.0+/MariaDB 10.5+)
 -- Bible text and canon seed data are intentionally deferred to Iteration 5.
 SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;
 SET time_zone = '+00:00';

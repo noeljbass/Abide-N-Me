@@ -16,12 +16,41 @@ final class ReadingPlanService
 
     public function listForUser(int $userId): array
     {
-        $query = $this->db->prepare("SELECT rp.public_id AS id,rp.name,rp.description,rp.builder_mode,rp.status,rp.start_date,rp.timezone,g.public_id AS group_id,g.name AS group_name,COUNT(pd.id) AS day_count FROM group_members gm JOIN groups g ON g.id=gm.group_id JOIN group_plans gp ON gp.group_id=g.id JOIN reading_plans rp ON rp.id=gp.plan_id LEFT JOIN plan_days pd ON pd.plan_id=rp.id WHERE gm.user_id=? AND gm.status='active' AND g.archived_at IS NULL GROUP BY rp.id,g.id ORDER BY rp.start_date DESC,rp.created_at DESC");
+        $query = $this->db->prepare("SELECT rp.public_id AS id,rp.name,rp.description,rp.builder_mode,rp.status,rp.start_date,rp.timezone,g.public_id AS group_id,g.name AS group_name,gm.role='owner' AS can_manage,COUNT(pd.id) AS day_count FROM group_members gm JOIN groups g ON g.id=gm.group_id JOIN group_plans gp ON gp.group_id=g.id JOIN reading_plans rp ON rp.id=gp.plan_id LEFT JOIN plan_days pd ON pd.plan_id=rp.id WHERE gm.user_id=? AND gm.status='active' AND g.archived_at IS NULL GROUP BY rp.id,g.id,gm.role ORDER BY rp.start_date DESC,rp.created_at DESC");
         $query->execute([$userId]);
         return array_map(static function (array $row): array {
             $row['day_count'] = (int) $row['day_count'];
+            $row['can_manage'] = (bool) $row['can_manage'];
             return $row;
         }, $query->fetchAll());
+    }
+
+    public function update(int $userId, array $input): array
+    {
+        $plan = $this->ownedGroupPlan((string) ($input['plan_id'] ?? ''), (string) ($input['group_id'] ?? ''), $userId);
+        $name = Validator::string($input['name'] ?? null, 2, 150);
+        $description = Validator::string($input['description'] ?? '', 0, 5000);
+        $startDate = (string) ($input['start_date'] ?? '');
+        $date = \DateTimeImmutable::createFromFormat('!Y-m-d', $startDate);
+        if (!$name || !$date || $date->format('Y-m-d') !== $startDate) throw new InvalidArgumentException('Enter a valid plan name and start date.');
+
+        $this->db->beginTransaction();
+        try {
+            $shift = (new \DateTimeImmutable($plan['start_date']))->diff($date)->format('%r%a');
+            $this->db->prepare('UPDATE reading_plans SET name=?,description=?,start_date=? WHERE id=?')->execute([$name, $description ?: null, $startDate, $plan['id']]);
+            if ((int) $shift !== 0) $this->db->prepare('UPDATE plan_days SET scheduled_date=DATE_ADD(scheduled_date, INTERVAL ? DAY) WHERE plan_id=?')->execute([(int) $shift, $plan['id']]);
+            $this->db->commit();
+            return ['id' => $input['plan_id'], 'name' => $name, 'description' => $description ?: null, 'start_date' => $startDate];
+        } catch (Throwable $exception) {
+            if ($this->db->inTransaction()) $this->db->rollBack();
+            throw $exception;
+        }
+    }
+
+    public function delete(int $userId, string $publicId, string $groupPublicId): void
+    {
+        $plan = $this->ownedGroupPlan($publicId, $groupPublicId, $userId);
+        $this->db->prepare('DELETE FROM reading_plans WHERE id=?')->execute([$plan['id']]);
     }
 
     public function today(int $userId): array
@@ -147,6 +176,7 @@ final class ReadingPlanService
     }
 
     private function authorizedGroup(string $publicId, int $userId): array { $q=$this->db->prepare("SELECT g.id,gm.role FROM groups g JOIN group_members gm ON gm.group_id=g.id WHERE g.public_id=? AND gm.user_id=? AND gm.status='active' AND gm.role IN ('owner','admin') AND g.archived_at IS NULL");$q->execute([$publicId,$userId]);$group=$q->fetch();if(!$group)throw new InvalidArgumentException('Choose a group you administer.');return $group; }
+    private function ownedGroupPlan(string $publicId, string $groupPublicId, int $userId): array { $q=$this->db->prepare("SELECT rp.id,rp.start_date FROM reading_plans rp JOIN group_plans gp ON gp.plan_id=rp.id JOIN groups g ON g.id=gp.group_id JOIN group_members gm ON gm.group_id=g.id WHERE rp.public_id=? AND g.public_id=? AND gm.user_id=? AND gm.status='active' AND gm.role='owner' AND g.archived_at IS NULL");$q->execute([$publicId,$groupPublicId,$userId]);$plan=$q->fetch();if(!$plan)throw new InvalidArgumentException('Only the group creator can manage this plan.');return $plan; }
     private function translation(string $code): array { $q=$this->db->prepare('SELECT id,canon_id FROM translations WHERE code=? AND is_active=TRUE');$q->execute([strtoupper($code)]);$row=$q->fetch();if(!$row)throw new InvalidArgumentException('Choose an available translation.');return ['id'=>(int)$row['id'],'canon_id'=>(int)$row['canon_id']]; }
     private function aliases(): array { $rows=$this->db->query('SELECT LOWER(bn.name),b.code FROM book_names bn JOIN books b ON b.id=bn.book_id')->fetchAll(PDO::FETCH_KEY_PAIR);return $rows; }
     private static function uuidV4(): string { $b=random_bytes(16);$b[6]=chr((ord($b[6])&15)|64);$b[8]=chr((ord($b[8])&63)|128);return vsprintf('%s%s-%s-%s-%s-%s%s%s',str_split(bin2hex($b),4)); }

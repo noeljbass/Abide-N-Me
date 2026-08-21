@@ -18,7 +18,7 @@ export function initAuth() {
   document.querySelectorAll('[data-auth-tab]').forEach((tab) => tab.addEventListener('click', () => { document.querySelectorAll('[data-auth-tab]').forEach((item) => item.setAttribute('aria-selected', String(item === tab))); document.querySelectorAll('[data-auth-form]').forEach((form) => { form.hidden = form.dataset.authForm !== tab.dataset.authTab; }); message(authMessage, ''); }));
   document.querySelectorAll('[data-auth-form]').forEach((form) => form.addEventListener('submit', async (event) => {
     event.preventDefault(); message(authMessage, ''); const submit = form.querySelector('[type="submit"]'); submit.disabled = true;
-    try { const data = await api(`auth/${form.dataset.authForm}.php`, { method: 'POST', body: Object.fromEntries(new FormData(form)) }); render(data.user); form.reset(); window.location.hash = 'today'; }
+    try { const data = await api(`auth/${form.dataset.authForm}.php`, { method: 'POST', body: Object.fromEntries(new FormData(form)) }); render(data.user); form.reset(); if (!localStorage.getItem('feedMySheep.pendingInvite')) window.location.hash = 'today'; }
     catch (error) { message(authMessage, error.message); } finally { submit.disabled = false; }
   }));
   const imageData = (file) => new Promise((resolve, reject) => {

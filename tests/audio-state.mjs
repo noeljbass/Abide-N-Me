@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+const source=await readFile(new URL('../assets/js/audio-state.js',import.meta.url),'utf8');
+const module=await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
+const { initialAudioState,reduceAudioState }=module;
+let state=reduceAudioState(initialAudioState,{type:'LOAD'});assert.equal(state.status,'loading');
+state=reduceAudioState(state,{type:'READY',duration:120});assert.deepEqual([state.status,state.duration],['ready',120]);
+state=reduceAudioState(state,{type:'PLAY'});assert.equal(state.status,'playing');
+state=reduceAudioState(state,{type:'TIME',position:30,duration:120});assert.equal(state.position,30);
+state=reduceAudioState(state,{type:'PAUSE',position:31});assert.equal(state.status,'paused');
+state=reduceAudioState(state,{type:'ENDED'});assert.deepEqual([state.status,state.position],['ended',120]);
+state=reduceAudioState(state,{type:'ERROR',message:'failed'});assert.equal(state.error,'failed');
+console.log('audio state tests passed');

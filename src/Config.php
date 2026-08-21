@@ -21,6 +21,14 @@ final class Config
                 'base_url' => self::environment('APP_BASE_URL', ''),
                 'timezone' => self::environment('APP_TIMEZONE', 'UTC'),
             ],
+            'audio' => [
+                'enabled' => self::booleanEnvironment('AUDIO_ENABLED', false),
+                'provider' => self::environment('AUDIO_PROVIDER', ''),
+                'api_base_url' => self::environment('AUDIO_API_BASE_URL', ''),
+                'api_key' => self::environment('AUDIO_API_KEY', ''),
+                'allowed_hosts' => array_values(array_filter(array_map('trim', explode(',', self::environment('AUDIO_ALLOWED_HOSTS', ''))))),
+                'request_timeout_seconds' => (int) self::environment('AUDIO_REQUEST_TIMEOUT_SECONDS', '10'),
+            ],
             'database' => [
                 'host' => self::environment('DB_HOST', ''),
                 'port' => (int) self::environment('DB_PORT', '3306'),

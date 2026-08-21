@@ -1,0 +1,767 @@
+{
+    "source_identifier": "engDRA",
+    "sha256": "b891705afb54aac46b98d9b87320620fde7cab9cf6d1fc5459d2785d2df5cd94",
+    "entries": [
+        {
+            "name": "02-GENengDRA.usfm",
+            "bytes": 847735
+        },
+        {
+            "name": "03-EXOengDRA.usfm",
+            "bytes": 701924
+        },
+        {
+            "name": "04-LEVengDRA.usfm",
+            "bytes": 506605
+        },
+        {
+            "name": "05-NUMengDRA.usfm",
+            "bytes": 687721
+        },
+        {
+            "name": "06-DEUengDRA.usfm",
+            "bytes": 608142
+        },
+        {
+            "name": "07-JOSengDRA.usfm",
+            "bytes": 415845
+        },
+        {
+            "name": "08-JDGengDRA.usfm",
+            "bytes": 432303
+        },
+        {
+            "name": "09-RUTengDRA.usfm",
+            "bytes": 58149
+        },
+        {
+            "name": "10-1SAengDRA.usfm",
+            "bytes": 606539
+        },
+        {
+            "name": "11-2SAengDRA.usfm",
+            "bytes": 484342
+        },
+        {
+            "name": "12-1KIengDRA.usfm",
+            "bytes": 571836
+        },
+        {
+            "name": "13-2KIengDRA.usfm",
+            "bytes": 555944
+        },
+        {
+            "name": "14-1CHengDRA.usfm",
+            "bytes": 449693
+        },
+        {
+            "name": "15-2CHengDRA.usfm",
+            "bytes": 616035
+        },
+        {
+            "name": "16-EZRengDRA.usfm",
+            "bytes": 171928
+        },
+        {
+            "name": "17-NEHengDRA.usfm",
+            "bytes": 233073
+        },
+        {
+            "name": "18-ESTengDRA.usfm",
+            "bytes": 152238
+        },
+        {
+            "name": "19-JOBengDRA.usfm",
+            "bytes": 405329
+        },
+        {
+            "name": "20-PSAengDRA.usfm",
+            "bytes": 625411
+        },
+        {
+            "name": "21-PROengDRA.usfm",
+            "bytes": 349167
+        },
+        {
+            "name": "22-ECCengDRA.usfm",
+            "bytes": 126250
+        },
+        {
+            "name": "23-SNGengDRA.usfm",
+            "bytes": 52763
+        },
+        {
+            "name": "24-ISAengDRA.usfm",
+            "bytes": 869666
+        },
+        {
+            "name": "25-JERengDRA.usfm",
+            "bytes": 1023865
+        },
+        {
+            "name": "26-LAMengDRA.usfm",
+            "bytes": 81032
+        },
+        {
+            "name": "27-EZKengDRA.usfm",
+            "bytes": 940337
+        },
+        {
+            "name": "28-DANengDRA.usfm",
+            "bytes": 278107
+        },
+        {
+            "name": "29-HOSengDRA.usfm",
+            "bytes": 118346
+        },
+        {
+            "name": "30-JOLengDRA.usfm",
+            "bytes": 38733
+        },
+        {
+            "name": "31-AMOengDRA.usfm",
+            "bytes": 100065
+        },
+        {
+            "name": "32-OBAengDRA.usfm",
+            "bytes": 15195
+        },
+        {
+            "name": "33-JONengDRA.usfm",
+            "bytes": 31688
+        },
+        {
+            "name": "34-MICengDRA.usfm",
+            "bytes": 73149
+        },
+        {
+            "name": "35-NAMengDRA.usfm",
+            "bytes": 26679
+        },
+        {
+            "name": "36-HABengDRA.usfm",
+            "bytes": 34743
+        },
+        {
+            "name": "37-ZEPengDRA.usfm",
+            "bytes": 40265
+        },
+        {
+            "name": "38-HAGengDRA.usfm",
+            "bytes": 24445
+        },
+        {
+            "name": "39-ZECengDRA.usfm",
+            "bytes": 154754
+        },
+        {
+            "name": "40-MALengDRA.usfm",
+            "bytes": 39318
+        },
+        {
+            "name": "41-TOBengDRA.usfm",
+            "bytes": 38224
+        },
+        {
+            "name": "42-JDTengDRA.usfm",
+            "bytes": 52621
+        },
+        {
+            "name": "45-WISengDRA.usfm",
+            "bytes": 60639
+        },
+        {
+            "name": "46-SIRengDRA.usfm",
+            "bytes": 172724
+        },
+        {
+            "name": "47-BARengDRA.usfm",
+            "bytes": 28804
+        },
+        {
+            "name": "52-1MAengDRA.usfm",
+            "bytes": 131230
+        },
+        {
+            "name": "53-2MAengDRA.usfm",
+            "bytes": 93092
+        },
+        {
+            "name": "70-MATengDRA.usfm",
+            "bytes": 564064
+        },
+        {
+            "name": "71-MRKengDRA.usfm",
+            "bytes": 356122
+        },
+        {
+            "name": "72-LUKengDRA.usfm",
+            "bytes": 620757
+        },
+        {
+            "name": "73-JHNengDRA.usfm",
+            "bytes": 468290
+        },
+        {
+            "name": "74-ACTengDRA.usfm",
+            "bytes": 579146
+        },
+        {
+            "name": "75-ROMengDRA.usfm",
+            "bytes": 228359
+        },
+        {
+            "name": "76-1COengDRA.usfm",
+            "bytes": 229467
+        },
+        {
+            "name": "77-2COengDRA.usfm",
+            "bytes": 145458
+        },
+        {
+            "name": "78-GALengDRA.usfm",
+            "bytes": 75570
+        },
+        {
+            "name": "79-EPHengDRA.usfm",
+            "bytes": 74888
+        },
+        {
+            "name": "80-PHPengDRA.usfm",
+            "bytes": 53374
+        },
+        {
+            "name": "81-COLengDRA.usfm",
+            "bytes": 49417
+        },
+        {
+            "name": "82-1THengDRA.usfm",
+            "bytes": 45214
+        },
+        {
+            "name": "83-2THengDRA.usfm",
+            "bytes": 24720
+        },
+        {
+            "name": "84-1TIengDRA.usfm",
+            "bytes": 52866
+        },
+        {
+            "name": "85-2TIengDRA.usfm",
+            "bytes": 38214
+        },
+        {
+            "name": "86-TITengDRA.usfm",
+            "bytes": 21282
+        },
+        {
+            "name": "87-PHMengDRA.usfm",
+            "bytes": 10515
+        },
+        {
+            "name": "88-HEBengDRA.usfm",
+            "bytes": 163368
+        },
+        {
+            "name": "89-JASengDRA.usfm",
+            "bytes": 54629
+        },
+        {
+            "name": "90-1PEengDRA.usfm",
+            "bytes": 57637
+        },
+        {
+            "name": "91-2PEengDRA.usfm",
+            "bytes": 36407
+        },
+        {
+            "name": "92-1JNengDRA.usfm",
+            "bytes": 60898
+        },
+        {
+            "name": "93-2JNengDRA.usfm",
+            "bytes": 7552
+        },
+        {
+            "name": "94-3JNengDRA.usfm",
+            "bytes": 7217
+        },
+        {
+            "name": "95-JUDengDRA.usfm",
+            "bytes": 14922
+        },
+        {
+            "name": "96-REVengDRA.usfm",
+            "bytes": 296825
+        },
+        {
+            "name": "copr.htm",
+            "bytes": 1926
+        },
+        {
+            "name": "keys.asc",
+            "bytes": 21585
+        },
+        {
+            "name": "gentium.css",
+            "bytes": 9545
+        }
+    ],
+    "markers": {
+        "declared_usfm_version": null,
+        "characteristic": "USFM without an explicit \\usfm declaration; uses id/h/toc/mt/c/v/p/q1 plus \\w character spans."
+    },
+    "books": {
+        "1CH": {
+            "code": "1CH",
+            "filename": "14-1CHengDRA.usfm",
+            "chapter_count": 29,
+            "verse_count": 940
+        },
+        "1CO": {
+            "code": "1CO",
+            "filename": "76-1COengDRA.usfm",
+            "chapter_count": 16,
+            "verse_count": 437
+        },
+        "1JN": {
+            "code": "1JN",
+            "filename": "92-1JNengDRA.usfm",
+            "chapter_count": 5,
+            "verse_count": 105
+        },
+        "1KI": {
+            "code": "1KI",
+            "filename": "12-1KIengDRA.usfm",
+            "chapter_count": 22,
+            "verse_count": 817
+        },
+        "1MA": {
+            "code": "1MA",
+            "filename": "52-1MAengDRA.usfm",
+            "chapter_count": 16,
+            "verse_count": 929
+        },
+        "1PE": {
+            "code": "1PE",
+            "filename": "90-1PEengDRA.usfm",
+            "chapter_count": 5,
+            "verse_count": 105
+        },
+        "1SA": {
+            "code": "1SA",
+            "filename": "10-1SAengDRA.usfm",
+            "chapter_count": 31,
+            "verse_count": 811
+        },
+        "1TH": {
+            "code": "1TH",
+            "filename": "82-1THengDRA.usfm",
+            "chapter_count": 5,
+            "verse_count": 88
+        },
+        "1TI": {
+            "code": "1TI",
+            "filename": "84-1TIengDRA.usfm",
+            "chapter_count": 6,
+            "verse_count": 113
+        },
+        "2CH": {
+            "code": "2CH",
+            "filename": "15-2CHengDRA.usfm",
+            "chapter_count": 36,
+            "verse_count": 822
+        },
+        "2CO": {
+            "code": "2CO",
+            "filename": "77-2COengDRA.usfm",
+            "chapter_count": 13,
+            "verse_count": 256
+        },
+        "2JN": {
+            "code": "2JN",
+            "filename": "93-2JNengDRA.usfm",
+            "chapter_count": 1,
+            "verse_count": 13
+        },
+        "2KI": {
+            "code": "2KI",
+            "filename": "13-2KIengDRA.usfm",
+            "chapter_count": 25,
+            "verse_count": 719
+        },
+        "2MA": {
+            "code": "2MA",
+            "filename": "53-2MAengDRA.usfm",
+            "chapter_count": 15,
+            "verse_count": 558
+        },
+        "2PE": {
+            "code": "2PE",
+            "filename": "91-2PEengDRA.usfm",
+            "chapter_count": 3,
+            "verse_count": 61
+        },
+        "2SA": {
+            "code": "2SA",
+            "filename": "11-2SAengDRA.usfm",
+            "chapter_count": 24,
+            "verse_count": 695
+        },
+        "2TH": {
+            "code": "2TH",
+            "filename": "83-2THengDRA.usfm",
+            "chapter_count": 3,
+            "verse_count": 46
+        },
+        "2TI": {
+            "code": "2TI",
+            "filename": "85-2TIengDRA.usfm",
+            "chapter_count": 4,
+            "verse_count": 83
+        },
+        "3JN": {
+            "code": "3JN",
+            "filename": "94-3JNengDRA.usfm",
+            "chapter_count": 1,
+            "verse_count": 14
+        },
+        "ACT": {
+            "code": "ACT",
+            "filename": "74-ACTengDRA.usfm",
+            "chapter_count": 28,
+            "verse_count": 1004
+        },
+        "AMO": {
+            "code": "AMO",
+            "filename": "31-AMOengDRA.usfm",
+            "chapter_count": 9,
+            "verse_count": 147
+        },
+        "BAR": {
+            "code": "BAR",
+            "filename": "47-BARengDRA.usfm",
+            "chapter_count": 6,
+            "verse_count": 213
+        },
+        "COL": {
+            "code": "COL",
+            "filename": "81-COLengDRA.usfm",
+            "chapter_count": 4,
+            "verse_count": 95
+        },
+        "DAN": {
+            "code": "DAN",
+            "filename": "28-DANengDRA.usfm",
+            "chapter_count": 14,
+            "verse_count": 531
+        },
+        "DEU": {
+            "code": "DEU",
+            "filename": "06-DEUengDRA.usfm",
+            "chapter_count": 34,
+            "verse_count": 959
+        },
+        "ECC": {
+            "code": "ECC",
+            "filename": "22-ECCengDRA.usfm",
+            "chapter_count": 12,
+            "verse_count": 222
+        },
+        "EPH": {
+            "code": "EPH",
+            "filename": "79-EPHengDRA.usfm",
+            "chapter_count": 6,
+            "verse_count": 155
+        },
+        "EST": {
+            "code": "EST",
+            "filename": "18-ESTengDRA.usfm",
+            "chapter_count": 16,
+            "verse_count": 275
+        },
+        "EXO": {
+            "code": "EXO",
+            "filename": "03-EXOengDRA.usfm",
+            "chapter_count": 40,
+            "verse_count": 1211
+        },
+        "EZK": {
+            "code": "EZK",
+            "filename": "27-EZKengDRA.usfm",
+            "chapter_count": 48,
+            "verse_count": 1272
+        },
+        "EZR": {
+            "code": "EZR",
+            "filename": "16-EZRengDRA.usfm",
+            "chapter_count": 10,
+            "verse_count": 280
+        },
+        "GAL": {
+            "code": "GAL",
+            "filename": "78-GALengDRA.usfm",
+            "chapter_count": 6,
+            "verse_count": 149
+        },
+        "GEN": {
+            "code": "GEN",
+            "filename": "02-GENengDRA.usfm",
+            "chapter_count": 50,
+            "verse_count": 1531
+        },
+        "HAB": {
+            "code": "HAB",
+            "filename": "36-HABengDRA.usfm",
+            "chapter_count": 3,
+            "verse_count": 56
+        },
+        "HAG": {
+            "code": "HAG",
+            "filename": "38-HAGengDRA.usfm",
+            "chapter_count": 2,
+            "verse_count": 38
+        },
+        "HEB": {
+            "code": "HEB",
+            "filename": "88-HEBengDRA.usfm",
+            "chapter_count": 13,
+            "verse_count": 303
+        },
+        "HOS": {
+            "code": "HOS",
+            "filename": "29-HOSengDRA.usfm",
+            "chapter_count": 14,
+            "verse_count": 198
+        },
+        "ISA": {
+            "code": "ISA",
+            "filename": "24-ISAengDRA.usfm",
+            "chapter_count": 66,
+            "verse_count": 1292
+        },
+        "JAS": {
+            "code": "JAS",
+            "filename": "89-JASengDRA.usfm",
+            "chapter_count": 5,
+            "verse_count": 108
+        },
+        "JDG": {
+            "code": "JDG",
+            "filename": "08-JDGengDRA.usfm",
+            "chapter_count": 21,
+            "verse_count": 618
+        },
+        "JDT": {
+            "code": "JDT",
+            "filename": "42-JDTengDRA.usfm",
+            "chapter_count": 16,
+            "verse_count": 345
+        },
+        "JER": {
+            "code": "JER",
+            "filename": "25-JERengDRA.usfm",
+            "chapter_count": 52,
+            "verse_count": 1363
+        },
+        "JHN": {
+            "code": "JHN",
+            "filename": "73-JHNengDRA.usfm",
+            "chapter_count": 21,
+            "verse_count": 880
+        },
+        "JOB": {
+            "code": "JOB",
+            "filename": "19-JOBengDRA.usfm",
+            "chapter_count": 42,
+            "verse_count": 1070
+        },
+        "JOL": {
+            "code": "JOL",
+            "filename": "30-JOLengDRA.usfm",
+            "chapter_count": 3,
+            "verse_count": 73
+        },
+        "JON": {
+            "code": "JON",
+            "filename": "33-JONengDRA.usfm",
+            "chapter_count": 4,
+            "verse_count": 48
+        },
+        "JOS": {
+            "code": "JOS",
+            "filename": "07-JOSengDRA.usfm",
+            "chapter_count": 24,
+            "verse_count": 658
+        },
+        "JUD": {
+            "code": "JUD",
+            "filename": "95-JUDengDRA.usfm",
+            "chapter_count": 1,
+            "verse_count": 25
+        },
+        "LAM": {
+            "code": "LAM",
+            "filename": "26-LAMengDRA.usfm",
+            "chapter_count": 5,
+            "verse_count": 154
+        },
+        "LEV": {
+            "code": "LEV",
+            "filename": "04-LEVengDRA.usfm",
+            "chapter_count": 27,
+            "verse_count": 858
+        },
+        "LUK": {
+            "code": "LUK",
+            "filename": "72-LUKengDRA.usfm",
+            "chapter_count": 24,
+            "verse_count": 1151
+        },
+        "MAL": {
+            "code": "MAL",
+            "filename": "40-MALengDRA.usfm",
+            "chapter_count": 4,
+            "verse_count": 55
+        },
+        "MAT": {
+            "code": "MAT",
+            "filename": "70-MATengDRA.usfm",
+            "chapter_count": 28,
+            "verse_count": 1070
+        },
+        "MIC": {
+            "code": "MIC",
+            "filename": "34-MICengDRA.usfm",
+            "chapter_count": 7,
+            "verse_count": 104
+        },
+        "MRK": {
+            "code": "MRK",
+            "filename": "71-MRKengDRA.usfm",
+            "chapter_count": 16,
+            "verse_count": 677
+        },
+        "NAM": {
+            "code": "NAM",
+            "filename": "35-NAMengDRA.usfm",
+            "chapter_count": 3,
+            "verse_count": 47
+        },
+        "NEH": {
+            "code": "NEH",
+            "filename": "17-NEHengDRA.usfm",
+            "chapter_count": 13,
+            "verse_count": 404
+        },
+        "NUM": {
+            "code": "NUM",
+            "filename": "05-NUMengDRA.usfm",
+            "chapter_count": 36,
+            "verse_count": 1288
+        },
+        "OBA": {
+            "code": "OBA",
+            "filename": "32-OBAengDRA.usfm",
+            "chapter_count": 1,
+            "verse_count": 21
+        },
+        "PHM": {
+            "code": "PHM",
+            "filename": "87-PHMengDRA.usfm",
+            "chapter_count": 1,
+            "verse_count": 25
+        },
+        "PHP": {
+            "code": "PHP",
+            "filename": "80-PHPengDRA.usfm",
+            "chapter_count": 4,
+            "verse_count": 104
+        },
+        "PRO": {
+            "code": "PRO",
+            "filename": "21-PROengDRA.usfm",
+            "chapter_count": 31,
+            "verse_count": 915
+        },
+        "PSA": {
+            "code": "PSA",
+            "filename": "20-PSAengDRA.usfm",
+            "chapter_count": 150,
+            "verse_count": 2530
+        },
+        "REV": {
+            "code": "REV",
+            "filename": "96-REVengDRA.usfm",
+            "chapter_count": 22,
+            "verse_count": 405
+        },
+        "ROM": {
+            "code": "ROM",
+            "filename": "75-ROMengDRA.usfm",
+            "chapter_count": 16,
+            "verse_count": 433
+        },
+        "RUT": {
+            "code": "RUT",
+            "filename": "09-RUTengDRA.usfm",
+            "chapter_count": 4,
+            "verse_count": 85
+        },
+        "SIR": {
+            "code": "SIR",
+            "filename": "46-SIRengDRA.usfm",
+            "chapter_count": 51,
+            "verse_count": 1591
+        },
+        "SNG": {
+            "code": "SNG",
+            "filename": "23-SNGengDRA.usfm",
+            "chapter_count": 8,
+            "verse_count": 116
+        },
+        "TIT": {
+            "code": "TIT",
+            "filename": "86-TITengDRA.usfm",
+            "chapter_count": 3,
+            "verse_count": 46
+        },
+        "TOB": {
+            "code": "TOB",
+            "filename": "41-TOBengDRA.usfm",
+            "chapter_count": 14,
+            "verse_count": 298
+        },
+        "WIS": {
+            "code": "WIS",
+            "filename": "45-WISengDRA.usfm",
+            "chapter_count": 19,
+            "verse_count": 439
+        },
+        "ZEC": {
+            "code": "ZEC",
+            "filename": "39-ZECengDRA.usfm",
+            "chapter_count": 14,
+            "verse_count": 211
+        },
+        "ZEP": {
+            "code": "ZEP",
+            "filename": "37-ZEPengDRA.usfm",
+            "chapter_count": 3,
+            "verse_count": 53
+        }
+    },
+    "summary": {
+        "entries": 76,
+        "books": 73,
+        "chapters": 1334,
+        "verses": 35811,
+        "uncompressed_bytes": 18496927
+    },
+    "numbering": {
+        "psalms": "Douay-Rheims/Vulgate numbering as supplied: 150 numbered psalms. Provider chapter numbers are retained.",
+        "esther": "Catholic additions integrated as Esther chapters 11\u201316; 16 chapters total.",
+        "daniel": "Prayer/Song in Daniel 3 and Susanna/Bel and the Dragon as chapters 13\u201314; 14 chapters total.",
+        "provider_mapping": "USFM book/chapter/verse identifiers retained in translation_books.numbering_metadata."
+    }
+}

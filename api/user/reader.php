@@ -1,0 +1,24 @@
+<?php
+declare(strict_types=1);
+use FeedMySheep\Auth;
+use FeedMySheep\HttpRequest;
+use FeedMySheep\JsonResponse;
+use FeedMySheep\Session;
+require dirname(__DIR__) . '/auth/_init.php';
+HttpRequest::requireMethod('PATCH');
+Session::requireCsrf();
+$userId = Session::userId();
+if ($userId === null) JsonResponse::error('authentication_required', 'Please sign in to continue.', 401);
+$input = HttpRequest::json();
+$translation = strtoupper(trim((string) ($input['translation'] ?? '')));
+$book = strtoupper(trim((string) ($input['book'] ?? '')));
+$chapter = filter_var($input['chapter'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+if (!preg_match('/^[A-Z0-9_-]{2,32}$/', $translation) || !preg_match('/^[A-Z0-9]{3,32}$/', $book) || $chapter === false) JsonResponse::error('validation_failed', 'Choose a valid translation, book, and chapter.', 422);
+$pdo = $database->connection();
+$lookup = $pdo->prepare('SELECT t.id translation_id,b.id book_id,tb.chapter_count FROM translations t JOIN translation_books tb ON tb.translation_id=t.id JOIN books b ON b.id=tb.book_id WHERE t.code=? AND b.code=? AND t.is_active=TRUE');
+$lookup->execute([$translation, $book]);
+$position = $lookup->fetch();
+if (!$position || $chapter > (int) $position['chapter_count']) JsonResponse::error('validation_failed', 'That reading position is unavailable.', 422);
+$save = $pdo->prepare('INSERT INTO user_settings(user_id,preferred_translation_id,last_book_id,last_chapter) VALUES(?,?,?,?) ON DUPLICATE KEY UPDATE preferred_translation_id=VALUES(preferred_translation_id),last_book_id=VALUES(last_book_id),last_chapter=VALUES(last_chapter)');
+$save->execute([$userId, $position['translation_id'], $position['book_id'], $chapter]);
+JsonResponse::success(['user' => (new Auth($pdo))->requireUser()]);

@@ -29,6 +29,8 @@ try {
     assert(array_column($report['entries'], 'name') === ['00-FRT.usfm', '01-GEN.usfm', '02-EXO.usfm']);
     assert($report['summary']['entries'] === 3);
     assert($report['summary']['books'] === 2);
+    assert($report['books']['GEN']['chapters'][1][1]['text'] === 'In the beginning.');
+    assert($report['books']['EXO']['chapters'][1][1]['text'] === 'These are the names.');
 
     $incompleteManifest = $manifest;
     $incompleteManifest['book_codes'][] = 'LEV';

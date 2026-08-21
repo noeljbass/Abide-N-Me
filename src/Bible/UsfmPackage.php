@@ -62,10 +62,18 @@ final class UsfmPackage
         foreach($parts as $part){
             if(preg_match('/^\\\\c\s+(\d+)/',$part,$x)){ $current=(int)$x[1]; $chapters[$current]??=[]; continue; }
             if(!preg_match('/^\\\\v\s+(\d+)([a-z]?)\s*(.*)$/s',$part,$x) || $current===null) continue;
-            $body=preg_replace('/\\\\w\s+([^|]+)\|[^\\\\]*\\\\w\*/u', '$1', $x[3]);
+            // Notes are metadata, not part of the verse text. Remove their entire
+            // contents before stripping ordinary character/paragraph markers.
+            $body=preg_replace('/\\\\\+?(f|fe|x)\b.*?\\\\\+?\1\*/us', '', $x[3]);
+            // Word-study fields may use either \w or the nested-marker form \+w.
+            // Keep the displayed word while discarding Strong's numbers and other
+            // attributes following the pipe.
+            $body=preg_replace('/\\\\\+?w\s+([^|\\\\]+)(?:\|[^\\\\]*)?\\\\\+?w\*/u', '$1', $body);
             $body=preg_replace('/\\\\(?:p|q\d*|m|mi|nb|b)\b\s*/u',' ',$body);
             $body=preg_replace('/\\\\[A-Za-z0-9]+\*?\s*/u', ' ', $body);
             $body=trim(preg_replace('/\s+/u',' ',$body));
+            $body=preg_replace('/\s+([,.;:!?])/u', '$1', $body);
+            $body=preg_replace('/([,.;:!?])(?=\p{L})/u', '$1 ', $body);
             if($body==='') throw new RuntimeException("Empty verse {$code} {$current}:{$x[1]}.");
             $key=(int)$x[1].($x[2]??''); if(isset($chapters[$current][$key])) throw new RuntimeException("Duplicate verse {$code} {$current}:{$key}.");
             $chapters[$current][$key]=['verse'=>(int)$x[1],'suffix'=>$x[2]??'','text'=>$body];

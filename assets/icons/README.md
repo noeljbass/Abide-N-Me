@@ -1,19 +1,18 @@
 # App icon assets
 
-The repository currently uses editable SVG placeholders so pull-request patches
-remain text-only. The following binary files were removed and should be created
-from the corresponding SVG artwork before production deployment:
+Keep all icon files in this directory. None is required at the web root because
+`index.html` and the PWA manifest use explicit paths.
 
-| File to create | Size | Source artwork | Use |
-| --- | ---: | --- | --- |
-| `apple-touch-icon.png` | 180 × 180 px | `apple-touch-icon.svg` | iPhone/iPad home screen |
-| `icon-192.png` | 192 × 192 px | `icon.svg` | PWA manifest icon |
-| `icon-512.png` | 512 × 512 px | `icon.svg` | PWA manifest/install icon |
+Required production files:
 
-Export each image as a full-size, non-indexed PNG in the sRGB color space. Do not
-add transparency around the outer green background. After adding the PNG files,
-replace the SVG Apple touch icon reference in `index.html`, add both PWA PNG sizes
-to `manifest.webmanifest`, and add all three files to the service-worker app shell.
+| File | Size | Use |
+| --- | ---: | --- |
+| `android-chrome-192x192.png` | 192 × 192 px | PWA and Android icon |
+| `android-chrome-512x512.png` | 512 × 512 px | PWA and Android install icon |
+| `apple-touch-icon.png` | 180 × 180 px | iPhone and iPad home screen |
+| `favicon.ico` | Multi-size ICO | Legacy and fallback browser favicon |
+| `favicon-16x16.png` | 16 × 16 px | Small browser favicon |
+| `favicon-32x32.png` | 32 × 32 px | Standard browser favicon |
 
-The existing `icon-maskable.svg` includes its own safe-area layout and remains the
-text-based maskable manifest icon.
+The 512 × 512 Android icon is also declared as maskable. Its important artwork
+must remain inside the central safe area so Android launchers do not crop it.

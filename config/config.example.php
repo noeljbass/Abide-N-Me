@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-// Copy this file to local.php only when environment variables are unavailable.
-// local.php is ignored by Git and denied by the included Apache rules.
+// Copy this file to local.php or config.php when environment variables are unavailable.
+// Both private filenames are ignored by Git and denied by the included Apache rules.
 return [
     'app' => [
         'environment' => 'production',
@@ -20,4 +20,3 @@ return [
         'charset' => 'utf8mb4',
     ],
 ];
-

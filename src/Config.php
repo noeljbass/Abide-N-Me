@@ -31,13 +31,17 @@ final class Config
             ],
         ];
 
-        $localPath = $root . '/config/local.php';
-        if (is_file($localPath)) {
-            $local = require $localPath;
+        $privatePaths = [$root . '/config/local.php', $root . '/config/config.php'];
+        foreach ($privatePaths as $privatePath) {
+            if (!is_file($privatePath)) {
+                continue;
+            }
+            $local = require $privatePath;
             if (!is_array($local)) {
-                throw new RuntimeException('Local configuration must return an array.');
+                throw new RuntimeException('Private configuration must return an array.');
             }
             $values = array_replace_recursive($values, $local);
+            break;
         }
 
         return new self($values);
@@ -79,4 +83,3 @@ final class Config
         return filter_var($value, FILTER_VALIDATE_BOOL);
     }
 }
-

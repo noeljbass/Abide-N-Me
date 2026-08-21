@@ -81,9 +81,13 @@
       </section>
 
       <section class="view" id="group" data-view="group" aria-labelledby="group-title" hidden>
-        <p class="eyebrow">Your community</p><h1 id="group-title">Bass Family</h1>
-        <div class="compact-card group-summary"><div><span class="card-kicker">Private group</span><h2>5 members</h2><p>Reading the Gospel of John together</p></div><div class="avatar-stack" aria-hidden="true"><span>M</span><span>D</span><span>C</span></div></div>
-        <div class="placeholder-card"><span class="placeholder-icon" aria-hidden="true">⌁</span><h2>Invite someone</h2><p>A secure join code and invitation link will make joining this group quick.</p><button class="button button-secondary" type="button" data-demo-message="Secure invitations will be built in Iteration 4.">View invite</button></div>
+        <p class="eyebrow">Your community</p><h1 id="group-title">Groups</h1>
+        <div class="auth-card join-card" data-join-card hidden><p class="eyebrow">Invitation</p><h2 data-join-name>Join a group</h2><p data-join-description></p><button class="button button-primary" type="button" data-join-submit>Join group</button><p class="form-message" data-join-message role="alert" hidden></p></div>
+        <form class="join-code-form" data-join-code-form><label for="group-code">Have a group code?</label><div><input id="group-code" name="code" autocomplete="off" autocapitalize="characters" maxlength="32" placeholder="FAMILY7" required><button class="button button-secondary" type="submit">Join</button></div></form>
+        <div data-groups-list></div>
+        <div class="placeholder-card" data-groups-empty><span class="placeholder-icon" aria-hidden="true">⌁</span><h2>Read Scripture together</h2><p>Create a private group, then invite family or friends with one link.</p></div>
+        <details class="group-create"><summary class="button button-primary">Create a group</summary><form data-create-group><label>Group name<input name="name" required minlength="2" maxlength="120"></label><label>Description <small>Optional</small><textarea name="description" maxlength="500"></textarea></label><button class="button button-primary" type="submit">Create private group</button><p class="form-message" data-group-form-message role="alert" hidden></p></form></details>
+        <section class="group-detail" data-group-detail hidden><button class="text-button" type="button" data-group-back>‹ All groups</button><p class="eyebrow" data-group-role></p><h2 data-group-name></h2><p class="muted" data-group-description></p><h3>Members</h3><ul class="member-list" data-group-members></ul><button class="button button-secondary" type="button" data-create-invite>Create invite link</button><div class="invite-result" data-invite-result hidden><label>Invitation link<input readonly data-invite-link></label><button class="text-button" type="button" data-copy-invite>Copy link</button></div><p class="form-message" data-group-detail-message role="alert" hidden></p></section>
       </section>
 
       <section class="view auth-view" id="account" data-view="account" aria-labelledby="account-title" hidden>

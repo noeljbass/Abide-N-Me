@@ -1,0 +1,17 @@
+{
+  "engDRA": {
+    "translation_code": "DRA1899",
+    "title": "Douay-Rheims 1899 American Edition",
+    "rights": "Public Domain",
+    "publisher": "eBible.org",
+    "details_url": "https://ebible.org/Scriptures/details.php?id=engDRA",
+    "package": {
+      "format": "USFM ZIP",
+      "filename": "engDRA_usfm.zip",
+      "url": "https://ebible.org/Scriptures/engDRA_usfm.zip",
+      "downloaded_at": "2026-08-21T12:03:30",
+      "downloaded_at_timezone": null,
+      "sha256": "b891705afb54aac46b98d9b87320620fde7cab9cf6d1fc5459d2785d2df5cd94"
+    }
+  }
+}

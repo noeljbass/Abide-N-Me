@@ -1,8 +1,8 @@
-const CACHE_NAME = 'feed-my-sheep-shell-v3';
+const CACHE_NAME = 'feed-my-sheep-shell-v4';
 const APP_SHELL = [
   './', './index.html', './offline.html', './manifest.webmanifest',
   './assets/css/app.css', './assets/js/app.js', './assets/js/router.js',
-  './assets/js/pwa.js', './assets/js/auth.js', './assets/js/api.js'
+  './assets/js/pwa.js', './assets/js/auth.js', './assets/js/api.js', './assets/js/groups.js'
 ];
 
 self.addEventListener('install', (event) => {

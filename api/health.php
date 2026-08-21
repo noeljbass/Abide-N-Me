@@ -6,7 +6,7 @@ use FeedMySheep\Database;
 use FeedMySheep\JsonResponse;
 
 $app = require dirname(__DIR__) . '/src/bootstrap.php';
-$requiredTables = ['users', 'user_settings', 'auth_tokens', 'rate_limits'];
+$requiredTables = ['users', 'user_settings', 'auth_tokens', 'rate_limits', 'groups', 'group_members', 'group_invites', 'canons', 'books', 'canon_books', 'translations'];
 
 try {
     $pdo = (new Database($app['config']))->connection();

@@ -20,3 +20,10 @@ After configuration, open `/api/health.php`. A ready installation returns
 `database: connected` and `schema: ready`. A safe error code identifies a missing
 private configuration, failed connection, or incomplete authentication schema
 without exposing credentials or SQL errors.
+
+## Iteration migrations
+
+After the base schema, import migration files from `database/migrations/` in
+numeric order. `002_catholic_canon.sql` seeds the 73-book Catholic canon and
+inactive metadata for the approved public-domain Douay-Rheims source. It does
+not import Bible text or activate the translation.

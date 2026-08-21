@@ -1,10 +1,12 @@
 import { initRouter } from './router.js';
 import { initPwa } from './pwa.js';
 import { initAuth } from './auth.js';
+import { initGroups } from './groups.js';
 
 initRouter();
 initPwa();
 initAuth();
+initGroups();
 
 const toast = document.querySelector('.toast');
 let toastTimer;

@@ -2,6 +2,8 @@ import { api, initializeCsrf } from './api.js';
 export function initAuth() {
   const guest = document.querySelector('[data-auth-guest]'); const member = document.querySelector('[data-auth-user]');
   const authMessage = document.querySelector('[data-auth-message]'); const profileMessage = document.querySelector('[data-profile-message]');
+  const statusCard = document.querySelector('[data-auth-status-card]'); const statusMessage = document.querySelector('[data-auth-status]');
+  const retryButton = document.querySelector('[data-auth-retry]');
   // The service worker can briefly pair a newly deployed script with an older
   // cached document. Treat optional account elements defensively so that one
   // renamed field cannot make a valid authenticated session look signed out.
@@ -10,6 +12,7 @@ export function initAuth() {
     element.textContent = value; element.classList.toggle('is-success', success); element.hidden = !value;
   };
   const render = (user) => {
+    if (statusCard) statusCard.hidden = true;
     if (guest) guest.hidden = Boolean(user); if (member) member.hidden = !user;
     const initial = user?.name?.charAt(0).toUpperCase() || 'A';
     const navImage = document.querySelector('[data-nav-avatar]'); const navInitial = document.querySelector('[data-nav-initial]');
@@ -42,5 +45,50 @@ export function initAuth() {
   });
   document.querySelector('[data-profile-form]')?.addEventListener('submit', async (event) => { event.preventDefault(); const form = event.currentTarget; const submit = form.querySelector('[type="submit"]'); submit.disabled = true; try { const formData = new FormData(form); const avatar = await imageData(formData.get('avatar')); const body = { name: formData.get('name') }; if (avatar !== undefined) body.avatar = avatar; const data = await api('user/profile.php', { method: 'PATCH', body }); render(data.user); form.elements.avatar.value = ''; message(profileMessage, 'Profile updated.', true); } catch (error) { message(profileMessage, error.message); } finally { submit.disabled = false; } });
   document.querySelector('[data-logout]')?.addEventListener('click', async () => { try { await api('auth/logout.php', { method: 'POST', body: {} }); render(null); await initializeCsrf(); } catch (error) { message(profileMessage, error.message); } });
-  initializeCsrf().then(() => api('auth/me.php')).then((data) => render(data.user)).catch((error) => { if (error.status !== 401) message(authMessage, 'Account services are temporarily unavailable.'); render(null); });
+  // An unresolved account check is not the same thing as being signed out. Showing the
+  // sign-in form after a failed request left the account page contradicting the rest of
+  // the app, which kept rendering group and plan data from a session that was still valid.
+  const unresolved = (text) => {
+    if (guest) guest.hidden = true; if (member) member.hidden = true;
+    if (statusCard) statusCard.hidden = false;
+    if (statusMessage) statusMessage.textContent = text;
+    if (retryButton) retryButton.disabled = false;
+  };
+
+  const wait = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
+  let checking = false;
+
+  async function refreshAccount({ attempts = 3 } = {}) {
+    if (checking) return;
+    checking = true;
+    // The CSRF token only matters for writes, so it must never decide how the account renders.
+    const csrf = initializeCsrf().catch(() => null);
+    try {
+      for (let attempt = 1; attempt <= attempts; attempt += 1) {
+        try {
+          const data = await api('auth/me.php');
+          await csrf;
+          render(data.user);
+          return;
+        } catch (error) {
+          if (error.status === 401) { await csrf; render(null); return; }
+          if (attempt === attempts || error.retryable === false) {
+            unresolved(error.status === 0
+              ? 'You appear to be offline. Your account will reappear once you reconnect.'
+              : 'We could not confirm your account just now. Your session is still saved.');
+            return;
+          }
+          await wait(400 * attempt);
+        }
+      }
+    } finally { checking = false; }
+  }
+
+  retryButton?.addEventListener('click', () => { if (retryButton) retryButton.disabled = true; message(authMessage, ''); refreshAccount(); });
+  window.addEventListener('online', () => refreshAccount());
+  // Mobile browsers freeze and restore the page instead of reloading it; re-check on return.
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && statusCard && !statusCard.hidden) refreshAccount(); });
+  window.addEventListener('pageshow', (event) => { if (event.persisted) refreshAccount(); });
+
+  refreshAccount();
 }

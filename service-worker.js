@@ -1,4 +1,4 @@
-const CACHE_NAME = 'feed-my-sheep-shell-v16';
+const CACHE_NAME = 'feed-my-sheep-shell-v17';
 const APP_SHELL = [
   './', './index.html', './offline.html', './privacy.html', './terms.html', './manifest.webmanifest',
   './assets/css/app.css', './assets/js/app.js', './assets/js/router.js',
@@ -19,6 +19,9 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET' || new URL(event.request.url).origin !== self.location.origin) return;
+  // API traffic must never be intercepted: a cached or synthesised error response makes a
+  // valid session look broken, and account state must always come from the live server.
+  if (new URL(event.request.url).pathname.includes('/api/')) return;
 
   event.respondWith(fetch(event.request).then((response) => {
     if (response.ok && ['style', 'script', 'image'].includes(event.request.destination)) {

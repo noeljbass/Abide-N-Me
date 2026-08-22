@@ -95,6 +95,10 @@
 
       <section class="view auth-view" id="account" data-view="account" aria-labelledby="account-title" hidden>
         <p class="eyebrow">Your account</p><h1 id="account-title">Welcome</h1>
+        <div class="auth-card" data-auth-status-card hidden>
+          <p class="form-message" data-auth-status role="alert">Checking your account…</p>
+          <button class="button button-secondary" type="button" data-auth-retry>Try again</button>
+        </div>
         <div class="auth-card" data-auth-guest>
           <div class="auth-tabs" role="tablist" aria-label="Account access">
             <button type="button" role="tab" aria-selected="true" data-auth-tab="login">Sign in</button>

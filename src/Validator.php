@@ -16,13 +16,13 @@ final class Validator
         return $length >= $min && $length <= $max ? $value : null;
     }
 
-    public static function email(mixed $value): ?string
+    public static function username(mixed $value): ?string
     {
         if (!is_string($value)) {
             return null;
         }
         $value = mb_strtolower(trim($value));
-        return filter_var($value, FILTER_VALIDATE_EMAIL) !== false ? $value : null;
+        return preg_match('/^[a-z0-9][a-z0-9._-]{2,31}$/', $value) === 1 ? $value : null;
     }
 
     public static function positiveInteger(mixed $value): ?int
@@ -31,4 +31,3 @@ final class Validator
         return $filtered === false ? null : $filtered;
     }
 }
-

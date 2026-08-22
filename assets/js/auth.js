@@ -10,7 +10,7 @@ export function initAuth() {
     navImage.hidden = !user?.avatar; navImage.src = user?.avatar || ''; navInitial.hidden = Boolean(user?.avatar); navInitial.textContent = initial;
     window.dispatchEvent(new CustomEvent('auth:changed', { detail: { user } }));
     if (!user) return;
-    document.querySelector('[data-profile-name]').textContent = user.name; document.querySelector('[data-profile-email]').textContent = user.email;
+    document.querySelector('[data-profile-name]').textContent = user.name; document.querySelector('[data-profile-username]').textContent = `@${user.username}`;
     const profileInitial = document.querySelector('[data-profile-initial]'); const profileImage = document.querySelector('[data-profile-avatar]');
     profileInitial.textContent = initial; profileInitial.hidden = Boolean(user.avatar); profileImage.hidden = !user.avatar; profileImage.src = user.avatar || '';
     document.querySelector('[data-profile-form] [name="name"]').value = user.name;

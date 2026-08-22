@@ -1,4 +1,4 @@
-const CACHE_NAME = 'feed-my-sheep-shell-v14';
+const CACHE_NAME = 'feed-my-sheep-shell-v15';
 const APP_SHELL = [
   './', './index.html', './offline.html', './privacy.html', './terms.html', './manifest.webmanifest',
   './assets/css/app.css', './assets/js/app.js', './assets/js/router.js',

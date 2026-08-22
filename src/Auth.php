@@ -12,26 +12,26 @@ final class Auth
     {
     }
 
-    public function register(string $name, string $email, string $password): array
+    public function register(string $name, string $username, string $password): array
     {
         $hash = password_hash($password, PASSWORD_DEFAULT);
         $publicId = self::uuidV4();
         $statement = $this->database->prepare(
-            "INSERT INTO users (public_id, name, email, password_hash, status) VALUES (:public_id, :name, :email, :password_hash, 'active')"
+            "INSERT INTO users (public_id, name, username, password_hash, status) VALUES (:public_id, :name, :username, :password_hash, 'active')"
         );
-        $statement->execute(['public_id' => $publicId, 'name' => $name, 'email' => $email, 'password_hash' => $hash]);
+        $statement->execute(['public_id' => $publicId, 'name' => $name, 'username' => $username, 'password_hash' => $hash]);
         $userId = (int) $this->database->lastInsertId();
         $settings = $this->database->prepare('INSERT INTO user_settings (user_id) VALUES (:user_id)');
         $settings->execute(['user_id' => $userId]);
         return $this->findById($userId);
     }
 
-    public function attempt(string $email, string $password): ?array
+    public function attempt(string $username, string $password): ?array
     {
         $statement = $this->database->prepare(
-            "SELECT u.id, u.public_id, u.name, u.email, u.password_hash, u.avatar_data, u.email_verified_at, t.code AS last_translation, b.code AS last_book, us.last_chapter FROM users u LEFT JOIN user_settings us ON us.user_id=u.id LEFT JOIN translations t ON t.id=us.preferred_translation_id LEFT JOIN books b ON b.id=us.last_book_id WHERE u.email = :email AND u.status = 'active' LIMIT 1"
+            "SELECT u.id, u.public_id, u.name, u.username, u.password_hash, u.avatar_data, t.code AS last_translation, b.code AS last_book, us.last_chapter FROM users u LEFT JOIN user_settings us ON us.user_id=u.id LEFT JOIN translations t ON t.id=us.preferred_translation_id LEFT JOIN books b ON b.id=us.last_book_id WHERE u.username = :username AND u.status = 'active' LIMIT 1"
         );
-        $statement->execute(['email' => $email]);
+        $statement->execute(['username' => $username]);
         $user = $statement->fetch();
         if (!$user || !password_verify($password, $user['password_hash'])) {
             return null;
@@ -61,7 +61,7 @@ final class Auth
     public function findById(int $id): ?array
     {
         $statement = $this->database->prepare(
-            "SELECT u.id, u.public_id, u.name, u.email, u.avatar_data, u.email_verified_at, t.code AS last_translation, b.code AS last_book, us.last_chapter FROM users u LEFT JOIN user_settings us ON us.user_id=u.id LEFT JOIN translations t ON t.id=us.preferred_translation_id LEFT JOIN books b ON b.id=us.last_book_id WHERE u.id = :id AND u.status = 'active' LIMIT 1"
+            "SELECT u.id, u.public_id, u.name, u.username, u.avatar_data, t.code AS last_translation, b.code AS last_book, us.last_chapter FROM users u LEFT JOIN user_settings us ON us.user_id=u.id LEFT JOIN translations t ON t.id=us.preferred_translation_id LEFT JOIN books b ON b.id=us.last_book_id WHERE u.id = :id AND u.status = 'active' LIMIT 1"
         );
         $statement->execute(['id' => $id]);
         $user = $statement->fetch();
@@ -87,9 +87,8 @@ final class Auth
         return [
             'id' => $user['public_id'],
             'name' => $user['name'],
-            'email' => $user['email'],
+            'username' => $user['username'],
             'avatar' => $user['avatar_data'] ?? null,
-            'email_verified' => $user['email_verified_at'] !== null,
             'reader' => ($user['last_translation'] ?? null) && ($user['last_book'] ?? null) && ($user['last_chapter'] ?? null) ? ['translation' => $user['last_translation'], 'book' => $user['last_book'], 'chapter' => (int) $user['last_chapter']] : null,
         ];
     }

@@ -6,6 +6,8 @@ namespace FeedMySheep;
 
 final class Session
 {
+    private const LIFETIME = 31536000;
+
     public static function start(): void
     {
         if (session_status() === PHP_SESSION_ACTIVE) {
@@ -19,9 +21,15 @@ final class Session
         ini_set('session.cookie_httponly', '1');
         ini_set('session.cookie_samesite', 'Lax');
         ini_set('session.cookie_secure', $secure ? '1' : '0');
-        ini_set('session.gc_maxlifetime', '1209600');
+        ini_set('session.gc_maxlifetime', (string) self::LIFETIME);
+        session_set_cookie_params(self::LIFETIME, '/', '', $secure, true);
         session_name('FMS_SESSION');
         session_start();
+
+        // Keep authenticated sessions alive for a full year from their most recent use.
+        if (isset($_SESSION['user_id'])) {
+            setcookie(session_name(), session_id(), time() + self::LIFETIME, '/', '', $secure, true);
+        }
     }
 
     public static function csrfToken(): string
@@ -70,4 +78,3 @@ final class Session
         session_destroy();
     }
 }
-

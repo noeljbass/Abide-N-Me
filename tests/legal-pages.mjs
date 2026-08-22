@@ -10,7 +10,7 @@ assert.match(account, /href="privacy\.html">Privacy Policy<\/a>/);
 assert.match(account, /href="terms\.html">Terms of Use<\/a>/);
 assert.match(account, /href="mailto:info@abiden\.me">info@abiden\.me<\/a>/);
 
-assert.match(privacy, /We do not use your email address for marketing\./);
+assert.match(privacy, /without giving us an email address/);
 assert.match(privacy, /href="mailto:info@abiden\.me"/);
 assert.match(terms, /href="privacy\.html">Privacy Policy<\/a>/);
 assert.match(terms, /href="mailto:info@abiden\.me"/);

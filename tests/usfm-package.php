@@ -15,6 +15,7 @@ if ($zip->open($archive, ZipArchive::OVERWRITE) !== true) throw new RuntimeExcep
 foreach (['00-FRT.usfm', '01-GEN.usfm', '02-EXO.usfm'] as $filename) {
     $zip->addFile($fixtureDirectory . '/' . $filename, $filename);
 }
+$zip->addFromString('dejavuserif.css', 'body { font-family: serif; }');
 $zip->close();
 
 $manifest = [
@@ -26,8 +27,8 @@ $manifest = [
 try {
     $report = (new UsfmPackage($archive, $manifest))->inspect();
     assert(array_keys($report['books']) === ['EXO', 'GEN']);
-    assert(array_column($report['entries'], 'name') === ['00-FRT.usfm', '01-GEN.usfm', '02-EXO.usfm']);
-    assert($report['summary']['entries'] === 3);
+    assert(array_column($report['entries'], 'name') === ['00-FRT.usfm', '01-GEN.usfm', '02-EXO.usfm', 'dejavuserif.css']);
+    assert($report['summary']['entries'] === 4);
     assert($report['summary']['books'] === 2);
     assert($report['books']['GEN']['chapters'][1][1]['text'] === 'In the beginning.');
     assert($report['books']['EXO']['chapters'][1][1]['text'] === 'These are the names.');
@@ -86,7 +87,7 @@ try {
     $manifest['excluded_book_codes'] = ['TOB'];
     $report = (new UsfmPackage($archive, $manifest))->inspect();
     assert(array_keys($report['books']) === ['EXO', 'GEN']);
-    assert(array_column($report['entries'], 'name') === ['00-FRT.usfm', '01-GEN.usfm', '02-EXO.usfm', '03-TOB.usfm']);
+    assert(array_column($report['entries'], 'name') === ['00-FRT.usfm', '01-GEN.usfm', 'dejavuserif.css', '02-EXO.usfm', '03-TOB.usfm']);
 } finally {
     unlink($archive);
 }

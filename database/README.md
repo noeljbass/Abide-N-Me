@@ -31,3 +31,8 @@ not import Bible text or activate the translation.
 Migration `003_bible_text_import.sql` adds verified package provenance. After applying it, run `php bin/import-bible.php` from the project root to import and activate DRA1899. Migration `004_passage_public_ids.sql` must be applied before using progress APIs; it assigns non-sequential public identifiers to existing and future plan passages.
 
 Migration `008_username_accounts.sql` replaces email sign-in with anonymous usernames. Existing accounts receive a temporary username in the form `member<ID>`; tell existing users their assigned username before deploying the new sign-in screen.
+
+Migration `009_bsb_translation.sql` adds inactive metadata for the public-domain
+Berean Standard Bible and associates it with the Protestant 66-book canon. Run
+the validation and import commands in `storage/imports/README.md` after applying
+the migration; a successful import activates the translation.

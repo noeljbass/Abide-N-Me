@@ -32,7 +32,7 @@ final class UsfmPackage
                 $stat=$zip->statIndex($i); $name=(string)$stat['name']; $size=(int)$stat['size'];
                 if ($name==='' || str_contains($name,"\0") || str_starts_with($name,'/') || preg_match('~(^|/)(\.\.?)(/|$)~',$name) || preg_match('~^[A-Za-z]:[\\\\/]~',$name)) throw new RuntimeException('Unsafe ZIP entry path detected.');
                 $total += $size; if ($total > self::MAX_UNCOMPRESSED_BYTES) throw new RuntimeException('ZIP uncompressed-size safety limit exceeded.');
-                if (!preg_match('/\.usfm$/i',$name) && !in_array($name,['copr.htm','keys.asc','gentium.css','gentiumplus.css','latin.css'],true)) throw new RuntimeException('Unexpected ZIP entry type: '.basename($name));
+                if (!preg_match('/\.usfm$/i',$name) && !in_array($name,['copr.htm','keys.asc','dejavuserif.css','gentium.css','gentiumplus.css','latin.css'],true)) throw new RuntimeException('Unexpected ZIP entry type: '.basename($name));
                 $entries[]=['name'=>$name,'bytes'=>$size];
                 if (!preg_match('/\.usfm$/i',$name)) continue;
                 $text=$zip->getFromIndex($i); if ($text===false || !mb_check_encoding($text,'UTF-8')) throw new RuntimeException('A USFM entry is unreadable or not UTF-8.');

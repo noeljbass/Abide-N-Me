@@ -1,7 +1,7 @@
 # Local Bible imports
 
-Place a downloaded `engDRA_usfm.zip` or `eng-kjv_usfm.zip` package in this
-directory before running the command-line importer. Import archives are ignored
+Place a downloaded `engDRA_usfm.zip`, `eng-kjv_usfm.zip`, or
+`engbsb_usfm.zip` package in this directory before running the command-line importer. Import archives are ignored
 by Git and must not be served or committed. On production hosting, keep the
 package outside the public web root whenever possible and delete it after a
 verified import.
@@ -20,6 +20,17 @@ supplemental books. The KJV manifest declares those identifiers in
 `excluded_book_codes`, so their omission from the Protestant 66-book import is
 explicit and auditable. Any chapter-bearing identifier that is neither in the
 canon nor that exclusion list still causes inspection to fail.
+
+Import the Berean Standard Bible after applying migration 009 with:
+
+```sh
+php bin/import-bible.php --source=engbsb --validate-only
+php bin/import-bible.php --source=engbsb
+```
+
+Like the KJV, the BSB uses the Protestant 66-book canon. Unlike the retained
+KJV archive, the BSB archive contains only those 66 canonical books, so it does
+not need an `excluded_book_codes` list.
 
 Import the Catholic Edition of the World English Bible after applying migration
 007:

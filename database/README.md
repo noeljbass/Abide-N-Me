@@ -36,3 +36,8 @@ Migration `009_bsb_translation.sql` adds inactive metadata for the public-domain
 Berean Standard Bible and associates it with the Protestant 66-book canon. Run
 the validation and import commands in `storage/imports/README.md` after applying
 the migration; a successful import activates the translation.
+
+Migration `010_permanent_group_codes.sql` adds the permanent group-code columns.
+It backfills every existing group with a unique four-character code before making
+the columns required and adding the unique hash index. Apply it before deploying
+the permanent-code version of the groups API.

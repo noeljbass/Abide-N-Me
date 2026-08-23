@@ -15,19 +15,26 @@ final class GroupService
     public function create(int $userId, string $name, ?string $description): array
     {
         $publicId = self::uuidV4();
-        $this->database->beginTransaction();
-        try {
-            $insert = $this->database->prepare('INSERT INTO groups (public_id, owner_user_id, name, description) VALUES (:public_id, :owner, :name, :description)');
-            $insert->execute(['public_id' => $publicId, 'owner' => $userId, 'name' => $name, 'description' => $description]);
-            $groupId = (int) $this->database->lastInsertId();
-            $member = $this->database->prepare("INSERT INTO group_members (group_id, user_id, role) VALUES (:group_id, :user_id, 'owner')");
-            $member->execute(['group_id' => $groupId, 'user_id' => $userId]);
-            $this->database->commit();
-            return $this->findForUser($publicId, $userId);
-        } catch (\Throwable $exception) {
-            if ($this->database->inTransaction()) $this->database->rollBack();
-            throw $exception;
+        for ($attempt = 0; $attempt < 20; $attempt++) {
+            $code = self::inviteCode();
+            $this->database->beginTransaction();
+            try {
+                $insert = $this->database->prepare('INSERT INTO groups (public_id, owner_user_id, name, description, join_code, join_code_hash) VALUES (:public_id, :owner, :name, :description, :join_code, :join_code_hash)');
+                $insert->execute(['public_id' => $publicId, 'owner' => $userId, 'name' => $name, 'description' => $description, 'join_code' => $code, 'join_code_hash' => hash('sha256', $code)]);
+                $groupId = (int) $this->database->lastInsertId();
+                $member = $this->database->prepare("INSERT INTO group_members (group_id, user_id, role) VALUES (:group_id, :user_id, 'owner')");
+                $member->execute(['group_id' => $groupId, 'user_id' => $userId]);
+                $this->database->commit();
+                return $this->findForUser($publicId, $userId);
+            } catch (\PDOException $exception) {
+                if ($this->database->inTransaction()) $this->database->rollBack();
+                if ($exception->getCode() !== '23000') throw $exception;
+            } catch (\Throwable $exception) {
+                if ($this->database->inTransaction()) $this->database->rollBack();
+                throw $exception;
+            }
         }
+        throw new \RuntimeException('Unable to allocate a unique group code.');
     }
 
     public function listForUser(int $userId): array
@@ -53,14 +60,10 @@ final class GroupService
         return $query->fetchAll();
     }
 
-    public function createInvite(string $publicId, int $userId, string $role, ?int $expiresInDays): array
+    public function createInvite(string $publicId, int $userId, string $role = 'member', ?int $expiresInDays = null): array
     {
         $group = $this->authorizedGroup($publicId, $userId, ['owner', 'admin']);
-        $code = self::inviteCode();
-        $expiresAt = $expiresInDays === null ? null : gmdate('Y-m-d H:i:s', time() + ($expiresInDays * 86400));
-        $insert = $this->database->prepare('INSERT INTO group_invites (group_id, created_by_user_id, code_hash, code_hint, role, expires_at) VALUES (:group_id, :creator, :hash, :hint, :role, :expires_at)');
-        $insert->execute(['group_id' => $group['internal_id'], 'creator' => $userId, 'hash' => hash('sha256', $code), 'hint' => substr($code, -4), 'role' => $role, 'expires_at' => $expiresAt]);
-        return ['code' => $code, 'group' => $this->formatGroup($group), 'expires_at' => $expiresAt];
+        return ['code' => $group['join_code'], 'group' => $this->formatGroup($group)];
     }
 
     public function delete(string $publicId, int $userId): void
@@ -72,7 +75,7 @@ final class GroupService
 
     public function previewInvite(string $code): ?array
     {
-        $query = $this->database->prepare("SELECT g.name, g.description, gi.expires_at FROM group_invites gi JOIN groups g ON g.id = gi.group_id WHERE gi.code_hash = :hash AND gi.revoked_at IS NULL AND (gi.expires_at IS NULL OR gi.expires_at > UTC_TIMESTAMP()) AND (gi.max_uses IS NULL OR gi.use_count < gi.max_uses) AND g.archived_at IS NULL LIMIT 1");
+        $query = $this->database->prepare("SELECT g.name, g.description FROM groups g WHERE g.join_code_hash = :hash AND g.archived_at IS NULL LIMIT 1");
         $query->execute(['hash' => hash('sha256', self::normalizeCode($code))]);
         $invite = $query->fetch();
         return $invite ?: null;
@@ -83,7 +86,7 @@ final class GroupService
         $hash = hash('sha256', self::normalizeCode($code));
         $this->database->beginTransaction();
         try {
-            $query = $this->database->prepare("SELECT gi.id, gi.group_id, gi.role, g.public_id FROM group_invites gi JOIN groups g ON g.id = gi.group_id WHERE gi.code_hash = :hash AND gi.revoked_at IS NULL AND (gi.expires_at IS NULL OR gi.expires_at > UTC_TIMESTAMP()) AND (gi.max_uses IS NULL OR gi.use_count < gi.max_uses) AND g.archived_at IS NULL FOR UPDATE");
+            $query = $this->database->prepare("SELECT g.id AS group_id, 'member' AS role, g.public_id FROM groups g WHERE g.join_code_hash = :hash AND g.archived_at IS NULL FOR UPDATE");
             $query->execute(['hash' => $hash]);
             $invite = $query->fetch();
             if (!$invite) {
@@ -96,10 +99,8 @@ final class GroupService
             if ($status === false) {
                 $insert = $this->database->prepare('INSERT INTO group_members (group_id, user_id, role) VALUES (:group_id, :user_id, :role)');
                 $insert->execute(['group_id' => $invite['group_id'], 'user_id' => $userId, 'role' => $invite['role']]);
-                $this->database->prepare('UPDATE group_invites SET use_count = use_count + 1 WHERE id = :id')->execute(['id' => $invite['id']]);
             } elseif ($status !== 'active') {
                 $this->database->prepare("UPDATE group_members SET status = 'active', role = :role, joined_at = UTC_TIMESTAMP() WHERE group_id = :group_id AND user_id = :user_id")->execute(['role' => $invite['role'], 'group_id' => $invite['group_id'], 'user_id' => $userId]);
-                $this->database->prepare('UPDATE group_invites SET use_count = use_count + 1 WHERE id = :id')->execute(['id' => $invite['id']]);
             }
             $this->database->commit();
             return $this->findForUser($invite['public_id'], $userId) ?? [];
@@ -146,7 +147,7 @@ final class GroupService
 
     private function authorizedGroup(string $publicId, int $userId, array $roles = ['owner', 'admin', 'member']): array
     {
-        $query = $this->database->prepare("SELECT g.id AS internal_id, g.public_id AS id, g.name, g.description, gm.role, gm.joined_at, (SELECT COUNT(*) FROM group_members x WHERE x.group_id = g.id AND x.status = 'active') AS member_count FROM groups g JOIN group_members gm ON gm.group_id = g.id WHERE g.public_id = :public_id AND gm.user_id = :user_id AND gm.status = 'active' AND g.archived_at IS NULL LIMIT 1");
+        $query = $this->database->prepare("SELECT g.id AS internal_id, g.public_id AS id, g.name, g.description, g.join_code, gm.role, gm.joined_at, (SELECT COUNT(*) FROM group_members x WHERE x.group_id = g.id AND x.status = 'active') AS member_count FROM groups g JOIN group_members gm ON gm.group_id = g.id WHERE g.public_id = :public_id AND gm.user_id = :user_id AND gm.status = 'active' AND g.archived_at IS NULL LIMIT 1");
         $query->execute(['public_id' => $publicId, 'user_id' => $userId]);
         $group = $query->fetch();
         if (!$group || !in_array($group['role'], $roles, true)) JsonResponse::error('group_not_found', 'That group was not found.', 404);
@@ -161,6 +162,6 @@ final class GroupService
     }
 
     public static function normalizeCode(string $code): string { return strtoupper(preg_replace('/[^A-Z0-9]/i', '', $code)); }
-    private static function inviteCode(): string { $alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; $code = ''; for ($i = 0; $i < 12; $i++) $code .= $alphabet[random_int(0, strlen($alphabet) - 1)]; return $code; }
+    private static function inviteCode(): string { $alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; $code = ''; for ($i = 0; $i < 4; $i++) $code .= $alphabet[random_int(0, strlen($alphabet) - 1)]; return $code; }
     private static function uuidV4(): string { $b = random_bytes(16); $b[6] = chr((ord($b[6]) & 15) | 64); $b[8] = chr((ord($b[8]) & 63) | 128); return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($b), 4)); }
 }

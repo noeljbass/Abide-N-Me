@@ -192,11 +192,14 @@ CREATE TABLE groups (
     owner_user_id BIGINT UNSIGNED NOT NULL,
     name VARCHAR(120) NOT NULL,
     description VARCHAR(500) NULL,
+    join_code CHAR(4) NOT NULL,
+    join_code_hash CHAR(64) NOT NULL,
     privacy ENUM('private') NOT NULL DEFAULT 'private',
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     archived_at TIMESTAMP NULL,
     UNIQUE KEY uq_groups_public_id (public_id),
+    UNIQUE KEY uq_groups_join_code_hash (join_code_hash),
     KEY idx_groups_owner (owner_user_id),
     CONSTRAINT fk_groups_owner FOREIGN KEY (owner_user_id) REFERENCES users(id) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

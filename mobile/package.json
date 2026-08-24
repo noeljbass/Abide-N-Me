@@ -1,0 +1,33 @@
+{
+  "name": "abiden-mobile",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Capacitor native shell for Abide N Me. Wraps the same web app served at https://abiden.me.",
+  "type": "module",
+  "scripts": {
+    "sync:www": "node scripts/sync-www.mjs",
+    "sync": "npm run sync:www && npx cap sync",
+    "assets": "npx @capacitor/assets generate --iconBackgroundColor \"#f7f3ea\" --iconBackgroundColorDark \"#f7f3ea\" --splashBackgroundColor \"#f7f3ea\" --splashBackgroundColorDark \"#1a201d\"",
+    "open:android": "npx cap open android",
+    "open:ios": "npx cap open ios",
+    "run:android": "npm run sync && npx cap run android",
+    "run:ios": "npm run sync && npx cap run ios",
+    "build:apk": "npm run sync && node scripts/gradle.mjs assembleDebug",
+    "build:aab": "npm run sync && node scripts/gradle.mjs bundleRelease",
+    "clean:android": "node scripts/gradle.mjs clean"
+  },
+  "dependencies": {
+    "@capacitor-community/text-to-speech": "^6.1.0",
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/app": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/ios": "^7.0.0",
+    "@capacitor/keyboard": "^7.0.0",
+    "@capacitor/splash-screen": "^7.0.0",
+    "@capacitor/status-bar": "^7.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^7.0.0"
+  }
+}

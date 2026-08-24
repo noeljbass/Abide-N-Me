@@ -1,3 +1,4 @@
+import { initNative } from './native.js';
 import { initRouter } from './router.js';
 import { initPwa } from './pwa.js';
 import { initAuth } from './auth.js';
@@ -7,6 +8,7 @@ import { initPlans } from './plans.js';
 import { initToday } from './today.js';
 import { initAudio } from './audio.js';
 
+initNative();
 initRouter();
 initPwa();
 initAuth();

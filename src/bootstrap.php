@@ -18,6 +18,10 @@ spl_autoload_register(static function (string $class): void {
     }
 });
 
+// Answered before anything else can emit output, and before any endpoint has a
+// chance to reject the browser's preflight request as a bad method.
+FeedMySheep\Cors::apply();
+
 $config = Config::load(dirname(__DIR__));
 date_default_timezone_set((string) $config->get('app.timezone', 'UTC'));
 

@@ -22,6 +22,13 @@ final class JsonResponse
 
     private static function send(array $payload, int $status): never
     {
+        // The applications track their session through the response body rather
+        // than a cookie. Only they are told the identifier: on the web the
+        // session cookie stays httponly, where script cannot read it.
+        if (Session::isAppClient() && session_status() === PHP_SESSION_ACTIVE) {
+            $payload['session'] = session_id();
+        }
+
         http_response_code($status);
         header('Content-Type: application/json; charset=utf-8');
         header('Cache-Control: no-store, private');

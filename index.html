@@ -275,6 +275,7 @@
           <p class="form-message" data-auth-message role="alert" hidden></p>
         </div>
         <div class="auth-card" data-auth-user hidden>
+<<<<<<< HEAD
           <span class="profile-avatar" data-profile-initial aria-hidden="true">A</span><img
             class="profile-avatar profile-avatar-image" data-profile-avatar alt="Your profile picture" hidden>
           <h2 data-profile-name></h2>
@@ -285,7 +286,36 @@
               class="button button-secondary" type="submit">Save profile</button></form>
           <button class="text-button" type="button" data-logout>Sign out</button>
           <p class="form-message" data-profile-message role="status" hidden></p>
+=======
+          <span class="profile-avatar" data-profile-initial aria-hidden="true">A</span><img class="profile-avatar profile-avatar-image" data-profile-avatar alt="Your profile picture" hidden><h2 data-profile-name></h2><p class="muted" data-profile-username></p>
+          <form data-profile-form><label>Display name<input name="name" autocomplete="name" required minlength="2" maxlength="100"></label><label>Profile picture <small>JPG, PNG, GIF, or WebP</small><input name="avatar" type="file" accept="image/jpeg,image/png,image/gif,image/webp"></label><button class="button button-secondary" type="submit">Save profile</button></form>
+          <button class="text-button" type="button" data-logout>Sign out</button><p class="form-message" data-profile-message role="status" hidden></p>
+          <section class="danger-zone">
+            <h3>Delete your account</h3>
+            <p>Removes your account and everything in it, permanently. Groups you own are handed to another member so their reading is not disturbed.</p>
+            <button class="button button-danger" type="button" data-delete-account>Delete my account</button>
+          </section>
+>>>>>>> 4120725 (Added delete account functionality and translation formating fixes)
         </div>
+        <dialog class="success-dialog delete-account-dialog" data-delete-account-dialog aria-labelledby="delete-account-title">
+          <form data-delete-account-form>
+            <h2 id="delete-account-title">Delete your account?</h2>
+            <p class="muted">This cannot be undone. Deleting your account removes:</p>
+            <ul class="danger-list">
+              <li>your profile, username and picture</li>
+              <li>your reading progress and listening position</li>
+              <li>your notes, highlights and bookmarks</li>
+              <li>your membership of every group</li>
+            </ul>
+            <p class="muted">A group you own passes to its longest-standing member. A group with nobody else in it is deleted along with its plans.</p>
+            <label>Confirm your password<input name="password" type="password" autocomplete="current-password" required></label>
+            <p class="form-message" data-delete-account-message role="alert" hidden></p>
+            <div class="group-actions">
+              <button class="button button-danger" type="submit">Delete permanently</button>
+              <button class="button button-secondary" type="button" data-delete-account-cancel>Keep my account</button>
+            </div>
+          </form>
+        </dialog>
         <footer class="account-legal" aria-label="Legal and support">
           <nav aria-label="Legal"><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></nav>
           <p>Questions or support? <a href="mailto:info@abiden.me">info@abiden.me</a></p>

@@ -59,6 +59,11 @@ final class UsfmPackage
     private function parse(string $text,string $filename,string $code,string $providerCode): array
     {
         $chapters=[]; $current=null;
+        // Section headings, parallel-reference lines and psalm superscriptions sit
+        // between verses in USFM, on lines of their own. The split below only breaks
+        // on \c and \v, so anything left here is swallowed by the verse before it and
+        // surfaces as a title stranded in the middle of Scripture.
+        $text=preg_replace('/^\\\\(?:s\d*|ms\d*|mte?\d*|mr|sr|r|sp|qa|d|cl|cp|cd|rem)\b[^\n]*$/mu','',$text);
         $parts=preg_split('/(?=^\\\\(?:c|v)\s+)/m',$text);
         foreach($parts as $part){
             if(preg_match('/^\\\\c\s+(\d+)/',$part,$x)){ $current=(int)$x[1]; $chapters[$current]??=[]; continue; }
@@ -70,8 +75,12 @@ final class UsfmPackage
             // Keep the displayed word while discarding Strong's numbers and other
             // attributes following the pipe.
             $body=preg_replace('/\\\\\+?w\s+([^|\\\\]+)(?:\|[^\\\\]*)?\\\\\+?w\*/u', '$1', $body);
-            $body=preg_replace('/\\\\(?:p|q\d*|m|mi|nb|b)\b\s*/u',' ',$body);
-            $body=preg_replace('/\\\\[A-Za-z0-9]+\*?\s*/u', ' ', $body);
+            $body=preg_replace('/\\\\\+?(?:p|q\d*|m|mi|nb|b)\b\s*/u',' ',$body);
+            $body=preg_replace('/\\\\\+?[A-Za-z0-9]+\*?\s*/u', ' ', $body);
+            // The eBible King James carries literal pilcrows in the running text as
+            // paragraph marks. They are typesetting from a printed edition rather than
+            // part of Scripture, and on a phone they read as stray punctuation.
+            $body=str_replace("\u{00B6}", ' ', $body);
             $body=trim(preg_replace('/\s+/u',' ',$body));
             $body=preg_replace('/\s+([,.;:!?])/u', '$1', $body);
             $body=preg_replace('/([,.;:!?])(?=\p{L})/u', '$1 ', $body);

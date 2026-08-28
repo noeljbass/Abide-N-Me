@@ -42,5 +42,8 @@ export function initGroups() {
   document.querySelector('[data-plan-edit-form]').addEventListener('submit', async event => { event.preventDefault(); const form = event.currentTarget; const submit = form.querySelector('[type="submit"]'); submit.disabled = true; try { await api('plans/index.php', { method: 'PATCH', body: Object.fromEntries(new FormData(form)) }); form.closest('dialog').close(); await openGroup(selectedGroup); } catch (error) { showMessage(form.querySelector('[data-plan-edit-message]'), error.message); } finally { submit.disabled = false; } });
   window.addEventListener('auth:changed', async (event) => { currentUser = event.detail.user; await loadGroups(); if (pendingCode()) { await preview(pendingCode()); if (currentUser) document.querySelector('[data-join-submit]').click(); } });
   window.addEventListener('invite:incoming', (event) => { location.hash = 'group'; preview(event.detail.code); });
+  // Reopening the tab re-reads whichever level is on screen: an open group
+  // refreshes its members and plans, the list refreshes itself.
+  window.addEventListener('route:changed', (event) => { if (event.detail.route !== 'group' || !currentUser) return; if (!detail.hidden && selectedGroup) openGroup(selectedGroup); else loadGroups(); });
   if (pendingCode()) { location.hash = 'group'; preview(pendingCode()); }
 }

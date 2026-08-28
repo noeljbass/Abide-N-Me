@@ -1,0 +1,18 @@
+node_modules/
+www/
+
+# Build output
+android/app/build/
+android/build/
+android/.gradle/
+android/local.properties
+android/app/release/
+android/keystore.properties
+*.keystore
+*.jks
+ios/App/build/
+ios/App/Pods/
+ios/App/output/
+ios/App/App/public/
+DerivedData/
+*.mobileprovision

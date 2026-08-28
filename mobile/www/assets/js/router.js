@@ -18,6 +18,12 @@ export function initRouter() {
 
     document.title = `${route[0].toUpperCase()}${route.slice(1)} · Abide N Me`;
     window.scrollTo({ top: 0, behavior: 'instant' });
+
+    // Deferred by a microtask so the very first route still reaches the feature
+    // modules, which register their listeners after initRouter() has run.
+    queueMicrotask(() => {
+      window.dispatchEvent(new CustomEvent('route:changed', { detail: { route } }));
+    });
   };
 
   window.addEventListener('hashchange', showRoute);

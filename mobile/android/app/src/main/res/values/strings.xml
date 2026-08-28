@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Abide N Me</string>
+    <string name="title_activity_main">Abide N Me</string>
+    <string name="package_name">me.abiden.app</string>
+    <string name="custom_url_scheme">me.abiden.app</string>
+</resources>

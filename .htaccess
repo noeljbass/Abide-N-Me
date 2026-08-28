@@ -8,6 +8,17 @@ Options -Indexes
   RewriteRule ^join/[A-Za-z0-9-]+/?$ index.html [L]
 </IfModule>
 
+<IfModule mod_mime.c>
+  AddType application/vnd.android.package-archive .apk
+</IfModule>
+
+# Deep link association files. Apple will not accept apple-app-site-association
+# unless it is served as application/json, and it has no file extension for
+# Apache to infer one from.
+<Files "apple-app-site-association">
+  ForceType application/json
+</Files>
+
 <FilesMatch "(^\.|\.(?:sql|log|ini|env|bak))$">
   Require all denied
 </FilesMatch>

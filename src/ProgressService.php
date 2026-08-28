@@ -15,7 +15,7 @@ final class ProgressService
     {
         $plans = (new ReadingPlanService($this->db))->today($userId);
         $memberQuery = $this->db->prepare(
-            "SELECT u.name,gm.user_id,COUNT(pp.id) passage_count,
+            "SELECT u.name,gm.user_id,MAX(u.avatar_data) avatar,COUNT(pp.id) passage_count,
              COALESCE(SUM(COALESCE(upp.progress_percent,0)),0) progress_sum
              FROM groups g
              JOIN group_members gm ON gm.group_id=g.id AND gm.status='active'
@@ -33,7 +33,7 @@ final class ProgressService
             $members = [];
             foreach ($memberQuery->fetchAll() as $member) {
                 $percent = (int) round((float) $member['progress_sum'] / max(1, (int) $member['passage_count']));
-                $members[] = ['name' => $member['name'], 'progress_percent' => $percent, 'completed' => $percent === 100];
+                $members[] = ['name' => $member['name'], 'avatar' => $member['avatar'] ?: null, 'progress_percent' => $percent, 'completed' => $percent === 100];
             }
             $assignment['members'] = $members;
             foreach ($assignment['day']['passages'] as &$passage) {

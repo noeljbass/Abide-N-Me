@@ -7,6 +7,7 @@ import { initBibleReader } from './bible.js';
 import { initPlans } from './plans.js';
 import { initToday } from './today.js';
 import { initAudio } from './audio.js';
+import { initReminders } from './reminders.js';
 
 initNative();
 initRouter();
@@ -17,6 +18,7 @@ initBibleReader();
 initPlans();
 initToday();
 initAudio();
+initReminders();
 
 const toast = document.querySelector('.toast');
 let toastTimer;

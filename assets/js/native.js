@@ -194,6 +194,80 @@ function createSpeaker() {
 
 export const speaker = createSpeaker();
 
+/* --------------------------------------------------- daily reading reminder --- */
+
+// A single fixed identifier: there is only ever one daily reminder, and reusing
+// the id means scheduling again replaces it rather than stacking a second one.
+const REMINDER_ID = 1001;
+const REMINDER_HOUR = 8;
+const REMINDER_MINUTE = 0;
+
+const notifications = () => plugin('LocalNotifications');
+
+/**
+ * The morning reminder.
+ *
+ * This is a notification the phone schedules for itself, not a push from a
+ * server: there is no account to register, nothing to deliver, and it fires
+ * with no signal and no server involved. A browser has no dependable equivalent
+ * for a recurring scheduled notification, so this exists only in the app.
+ */
+export const reminder = {
+  get available() {
+    return Boolean(notifications());
+  },
+
+  get hour() {
+    return REMINDER_HOUR;
+  },
+
+  /** @returns {Promise<{permission: string, enabled: boolean}>} */
+  async status() {
+    const engine = notifications();
+    if (!engine) return { permission: 'unsupported', enabled: false };
+
+    const [permission, pending] = await Promise.all([engine.checkPermissions(), engine.getPending()]);
+    return {
+      permission: permission?.display ?? 'prompt',
+      enabled: (pending?.notifications ?? []).some((item) => Number(item.id) === REMINDER_ID),
+    };
+  },
+
+  /**
+   * Asks for permission if it has not been given, then schedules the reminder.
+   *
+   * `schedule.on` is a cron-style match rather than a fixed instant, so the
+   * next occurrence is recomputed against the device's own clock after each
+   * firing. That is what makes daylight saving a non-event: the reminder stays
+   * at eight in the morning rather than drifting to seven or nine.
+   */
+  async enable() {
+    const engine = notifications();
+    if (!engine) return { permission: 'unsupported', enabled: false };
+
+    let granted = (await engine.checkPermissions())?.display;
+    if (granted !== 'granted') granted = (await engine.requestPermissions())?.display;
+    if (granted !== 'granted') return { permission: granted ?? 'denied', enabled: false };
+
+    await engine.schedule({
+      notifications: [{
+        id: REMINDER_ID,
+        title: 'Good morning',
+        body: 'A few minutes in Scripture to start the day.',
+        schedule: { on: { hour: REMINDER_HOUR, minute: REMINDER_MINUTE }, allowWhileIdle: true },
+      }],
+    });
+
+    return { permission: granted, enabled: true };
+  },
+
+  async disable() {
+    const engine = notifications();
+    if (!engine) return;
+    await engine.cancel({ notifications: [{ id: REMINDER_ID }] });
+  },
+};
+
 /**
  * Wires up the pieces of native behaviour a web page gets for free:
  * dismissing the launch screen, tinting the status bar, the Android back

@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -16,6 +17,7 @@
   <link rel="stylesheet" href="assets/css/app.css">
   <title>Abide N Me</title>
 </head>
+
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
   <div class="app-shell">
@@ -43,7 +45,8 @@
           <a class="button button-secondary" href="#bible">Open the Bible</a>
         </section>
         <section class="landing" data-today-landing hidden>
-          <p class="landing-lede">Abide N Me is a Bible reading plan you build and lead yourself — for your family, your small group, or just you. Choose the books, set the pace, and read or listen together.</p>
+          <p class="landing-lede">Abide N Me is a Bible reading plan you build and lead yourself — for your family, your
+            small group, or just you. Choose the books, set the pace, and read or listen together.</p>
 
           <div class="landing-actions">
             <a class="button button-primary" href="#account">Create a free account</a>
@@ -62,21 +65,24 @@
               <span class="landing-icon" aria-hidden="true">◆</span>
               <div>
                 <h2>No ads, no trackers</h2>
-                <p>There is no advertising and no third-party analytics anywhere in this app. What you read is kept so your group can encourage one another, and for nothing else.</p>
+                <p>There is no advertising and no third-party analytics anywhere in this app. What you read is kept so
+                  your group can encourage one another, and for nothing else.</p>
               </div>
             </li>
             <li class="landing-point">
               <span class="landing-icon" aria-hidden="true">☗</span>
               <div>
                 <h2>Led by a parent, not an algorithm</h2>
-                <p>You write the plan and decide what your household reads and when. Groups are private and joined by a code you hand out yourself.</p>
+                <p>You write the plan and decide what your household reads and when. Groups are private and joined by a
+                  code you hand out yourself.</p>
               </div>
             </li>
             <li class="landing-point">
               <span class="landing-icon" aria-hidden="true">♪</span>
               <div>
                 <h2>Read it or hear it</h2>
-                <p>Every chapter can be read on screen or read aloud by your device, so Scripture fits a school run or a bedtime as well as a quiet morning.</p>
+                <p>Every chapter can be read on screen or read aloud by your device, so Scripture fits a school run or a
+                  bedtime as well as a quiet morning.</p>
               </div>
             </li>
           </ul>
@@ -84,67 +90,161 @@
           <section class="landing-download">
             <div>
               <h2>Prefer it as an app?</h2>
-              <p>Abide N Me works in any browser. There is also an Android build if you would rather have it on your home screen, without a browser around it.</p>
+              <p>Abide N Me works in any browser. There is also an Android build if you would rather have it on your
+                home screen, without a browser around it.</p>
             </div>
-            <a class="button button-primary" href="https://abiden.me/download/abide-n-me.apk" download="abide-n-me.apk">Download for Android</a>
-            <p class="landing-download-note">Your phone will ask you to allow installing apps from your browser. There is no iPhone build yet.</p>
+            <a class="button button-primary" href="https://abiden.me/download/abide-n-me.apk"
+              download="abide-n-me.apk">Download for Android</a>
+            <p class="landing-download-note">Your phone will ask you to allow installing apps from your browser. There
+              is no iPhone build yet.</p>
           </section>
 
-          <p class="landing-legal"><a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms of Use</a></p>
+          <p class="landing-legal"><a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms of Use</a> ·
+            <a href="https://github.com/noeljbass/Abide-N-Me">GitHub Repo</a></p>
         </section>
       </section>
 
       <section class="view bible-view" id="bible" data-view="bible" aria-labelledby="bible-title" hidden>
-        <div class="reader-heading"><h1 id="bible-title">Read Scripture</h1><button class="icon-button" type="button" data-reader-audio aria-label="Listen to this chapter">▶</button></div>
+        <div class="reader-heading">
+          <h1 id="bible-title">Read Scripture</h1><button class="icon-button" type="button" data-reader-audio
+            aria-label="Listen to this chapter">▶</button>
+        </div>
         <form class="reader-controls" data-reader-controls>
-          <label><span>Translation</span><select name="translation" data-translation aria-label="Bible translation"></select></label>
+          <label><span>Translation</span><select name="translation" data-translation
+              aria-label="Bible translation"></select></label>
           <label><span>Book</span><select name="book" data-book aria-label="Bible book"></select></label>
           <label><span>Chapter</span><select name="chapter" data-chapter aria-label="Chapter"></select></label>
         </form>
         <div class="reader-status" data-reader-status role="status" aria-live="polite">Loading Scripture…</div>
         <article class="scripture" data-scripture aria-label="Bible chapter" hidden></article>
-        <aside class="verse-actions" data-verse-actions hidden aria-label="Selected verse actions"><strong data-selected-reference></strong><div><button type="button" data-reader-action="highlight" aria-pressed="false">Highlight</button><button type="button" data-reader-action="bookmark" aria-pressed="false">Bookmark</button><button type="button" data-reader-action="note">Private note</button></div><section class="note-editor" data-note-editor hidden><strong>Private notes</strong><div class="past-notes" data-past-notes></div><label>Add a note<textarea data-note-body maxlength="5000"></textarea></label><button type="button" data-save-note>Save note</button></section><p data-reader-action-status role="status"></p></aside>
-        <nav class="chapter-navigation" aria-label="Chapter navigation"><button class="button button-secondary" type="button" data-previous-chapter>← Previous</button><button class="button button-secondary" type="button" data-next-chapter>Next →</button></nav>
+        <aside class="verse-actions" data-verse-actions hidden aria-label="Selected verse actions"><strong
+            data-selected-reference></strong>
+          <div><button type="button" data-reader-action="highlight" aria-pressed="false">Highlight</button><button
+              type="button" data-reader-action="bookmark" aria-pressed="false">Bookmark</button><button type="button"
+              data-reader-action="note">Private note</button></div>
+          <section class="note-editor" data-note-editor hidden><strong>Private notes</strong>
+            <div class="past-notes" data-past-notes></div><label>Add a note<textarea data-note-body
+                maxlength="5000"></textarea></label><button type="button" data-save-note>Save note</button>
+          </section>
+          <p data-reader-action-status role="status"></p>
+        </aside>
+        <nav class="chapter-navigation" aria-label="Chapter navigation"><button class="button button-secondary"
+            type="button" data-previous-chapter>← Previous</button><button class="button button-secondary" type="button"
+            data-next-chapter>Next →</button></nav>
       </section>
 
       <section class="view" id="plans" data-view="plans" aria-labelledby="plans-title" hidden>
-        <p class="eyebrow">Reading together</p><h1 id="plans-title">Plans</h1>
+        <p class="eyebrow">Reading together</p>
+        <h1 id="plans-title">Plans</h1>
         <div data-plans-list></div>
-        <div class="placeholder-card" data-plans-empty><span class="placeholder-icon" aria-hidden="true">＋</span><h2>Create a reading plan</h2><p>Choose books for an evenly distributed schedule, or enter each day exactly.</p></div>
-        <details class="plan-builder" data-plan-builder><summary class="button button-primary">New plan</summary>
+        <div class="placeholder-card" data-plans-empty><span class="placeholder-icon" aria-hidden="true">＋</span>
+          <h2>Create a reading plan</h2>
+          <p>Choose books for an evenly distributed schedule, or enter each day exactly.</p>
+        </div>
+        <details class="plan-builder" data-plan-builder>
+          <summary class="button button-primary">New plan</summary>
           <form data-plan-form>
             <p class="form-message" data-plan-message role="alert" hidden></p>
             <label>Group<select name="group_id" required data-plan-group></select></label>
-            <label>Plan name<input name="name" required minlength="2" maxlength="150" placeholder="Gospel of John together"></label>
+            <label>Plan name<input name="name" required minlength="2" maxlength="150"
+                placeholder="Gospel of John together"></label>
             <label>Description <small>Optional</small><textarea name="description" maxlength="5000"></textarea></label>
-            <fieldset><legend>Build mode</legend><label><input type="radio" name="mode" value="automatic" checked> Automatic</label><label><input type="radio" name="mode" value="manual"> Manual</label></fieldset>
+            <fieldset>
+              <legend>Build mode</legend><label><input type="radio" name="mode" value="automatic" checked>
+                Automatic</label><label><input type="radio" name="mode" value="manual"> Manual</label>
+            </fieldset>
             <label>Start date<input type="date" name="start_date" required></label>
             <input type="hidden" name="timezone" data-plan-timezone value="UTC">
             <section data-automatic-fields>
-              <fieldset><legend>Books</legend><p id="books-help" class="field-help">Select one or more books.</p><div class="book-options" data-plan-books aria-describedby="books-help"></div></fieldset>
-              <label>Duration in calendar days<input type="number" name="duration_days" min="1" max="730" value="30"></label>
-              <fieldset><legend>Reading days</legend><div class="weekday-options" data-weekdays></div></fieldset>
+              <fieldset>
+                <legend>Books</legend>
+                <p id="books-help" class="field-help">Select one or more books.</p>
+                <div class="book-options" data-plan-books aria-describedby="books-help"></div>
+              </fieldset>
+              <label>Duration in calendar days<input type="number" name="duration_days" min="1" max="730"
+                  value="30"></label>
+              <fieldset>
+                <legend>Reading days</legend>
+                <div class="weekday-options" data-weekdays></div>
+              </fieldset>
             </section>
-            <section data-manual-fields hidden><div data-manual-days></div><button class="button button-secondary" type="button" data-add-plan-day>+ Add day</button></section>
+            <section data-manual-fields hidden>
+              <div data-manual-days></div><button class="button button-secondary" type="button" data-add-plan-day>+ Add
+                day</button>
+            </section>
             <button class="button button-primary" type="submit">Create and assign plan</button>
           </form>
         </details>
       </section>
 
       <section class="view" id="group" data-view="group" aria-labelledby="group-title" hidden>
-        <p class="eyebrow">Your community</p><h1 id="group-title">Groups</h1>
-        <div class="auth-card join-card" data-join-card hidden><p class="eyebrow">Invitation</p><h2 data-join-name>Join a group</h2><p data-join-description></p><button class="button button-primary" type="button" data-join-submit>Join group</button><p class="form-message" data-join-message role="alert" hidden></p></div>
-        <form class="join-code-form" data-join-code-form><label for="group-code">Have a group code?</label><div><input id="group-code" name="code" autocomplete="off" autocapitalize="characters" maxlength="32" placeholder="FAMILY7" required><button class="button button-secondary" type="submit">Join</button></div></form>
+        <p class="eyebrow">Your community</p>
+        <h1 id="group-title">Groups</h1>
+        <div class="auth-card join-card" data-join-card hidden>
+          <p class="eyebrow">Invitation</p>
+          <h2 data-join-name>Join a group</h2>
+          <p data-join-description></p><button class="button button-primary" type="button" data-join-submit>Join
+            group</button>
+          <p class="form-message" data-join-message role="alert" hidden></p>
+        </div>
+        <form class="join-code-form" data-join-code-form><label for="group-code">Have a group code?</label>
+          <div><input id="group-code" name="code" autocomplete="off" autocapitalize="characters" maxlength="32"
+              placeholder="FAMILY7" required><button class="button button-secondary" type="submit">Join</button></div>
+        </form>
         <div data-groups-list></div>
-        <div class="placeholder-card" data-groups-empty><span class="placeholder-icon" aria-hidden="true">⌁</span><h2>Read Scripture together</h2><p>Create a private group, then invite family or friends with one link.</p></div>
-        <details class="group-create"><summary class="button button-primary">Create a group</summary><form data-create-group><label>Group name<input name="name" required minlength="2" maxlength="120"></label><label>Description <small>Optional</small><textarea name="description" maxlength="500"></textarea></label><button class="button button-primary" type="submit">Create private group</button><p class="form-message" data-group-form-message role="alert" hidden></p></form></details>
-        <section class="group-detail" data-group-detail hidden><button class="text-button" type="button" data-group-back>‹ All groups</button><p class="eyebrow" data-group-role></p><h2 data-group-name></h2><p class="muted" data-group-description></p><h3>Plans</h3><div data-group-plans></div><p class="muted" data-group-plans-empty>No plans have been assigned to this group.</p><h3>Members</h3><ul class="member-list" data-group-members></ul><div class="group-actions"><button class="button button-secondary" type="button" data-create-invite>Show sharing details</button><button class="button button-danger" type="button" data-delete-group hidden>Delete group</button></div><div class="invite-result" data-invite-result hidden><label>Invitation link<input readonly data-invite-link></label><button class="text-button" type="button" data-copy-invite>Copy link</button><label>Group code<input readonly data-invite-code></label><button class="text-button" type="button" data-copy-code>Copy code</button></div><p class="form-message" data-group-detail-message role="alert" hidden></p></section>
-        <dialog class="success-dialog plan-edit-dialog" data-plan-edit-dialog><form data-plan-edit-form><h2>Edit group plan</h2><input type="hidden" name="plan_id"><input type="hidden" name="group_id"><label>Plan name<input name="name" required minlength="2" maxlength="150"></label><label>Description <small>Optional</small><textarea name="description" maxlength="5000"></textarea></label><label>Start date<input type="date" name="start_date" required></label><p class="form-message" data-plan-edit-message role="alert" hidden></p><div class="group-actions"><button class="button button-primary" type="submit">Save changes</button><button class="button button-secondary" type="button" data-plan-edit-cancel>Cancel</button></div></form></dialog>
-        <dialog class="success-dialog" data-group-created-dialog><h2>Group created successfully</h2><p>Your private group is ready. You can now invite people to join.</p><form method="dialog"><button class="button button-primary" value="continue">View group</button></form></dialog>
+        <div class="placeholder-card" data-groups-empty><span class="placeholder-icon" aria-hidden="true">⌁</span>
+          <h2>Read Scripture together</h2>
+          <p>Create a private group, then invite family or friends with one link.</p>
+        </div>
+        <details class="group-create">
+          <summary class="button button-primary">Create a group</summary>
+          <form data-create-group><label>Group name<input name="name" required minlength="2"
+                maxlength="120"></label><label>Description <small>Optional</small><textarea name="description"
+                maxlength="500"></textarea></label><button class="button button-primary" type="submit">Create private
+              group</button>
+            <p class="form-message" data-group-form-message role="alert" hidden></p>
+          </form>
+        </details>
+        <section class="group-detail" data-group-detail hidden><button class="text-button" type="button"
+            data-group-back>‹ All groups</button>
+          <p class="eyebrow" data-group-role></p>
+          <h2 data-group-name></h2>
+          <p class="muted" data-group-description></p>
+          <h3>Plans</h3>
+          <div data-group-plans></div>
+          <p class="muted" data-group-plans-empty>No plans have been assigned to this group.</p>
+          <h3>Members</h3>
+          <ul class="member-list" data-group-members></ul>
+          <div class="group-actions"><button class="button button-secondary" type="button" data-create-invite>Show
+              sharing details</button><button class="button button-danger" type="button" data-delete-group hidden>Delete
+              group</button></div>
+          <div class="invite-result" data-invite-result hidden><label>Invitation link<input readonly
+                data-invite-link></label><button class="text-button" type="button" data-copy-invite>Copy
+              link</button><label>Group code<input readonly data-invite-code></label><button class="text-button"
+              type="button" data-copy-code>Copy code</button></div>
+          <p class="form-message" data-group-detail-message role="alert" hidden></p>
+        </section>
+        <dialog class="success-dialog plan-edit-dialog" data-plan-edit-dialog>
+          <form data-plan-edit-form>
+            <h2>Edit group plan</h2><input type="hidden" name="plan_id"><input type="hidden" name="group_id"><label>Plan
+              name<input name="name" required minlength="2" maxlength="150"></label><label>Description
+              <small>Optional</small><textarea name="description" maxlength="5000"></textarea></label><label>Start
+              date<input type="date" name="start_date" required></label>
+            <p class="form-message" data-plan-edit-message role="alert" hidden></p>
+            <div class="group-actions"><button class="button button-primary" type="submit">Save changes</button><button
+                class="button button-secondary" type="button" data-plan-edit-cancel>Cancel</button></div>
+          </form>
+        </dialog>
+        <dialog class="success-dialog" data-group-created-dialog>
+          <h2>Group created successfully</h2>
+          <p>Your private group is ready. You can now invite people to join.</p>
+          <form method="dialog"><button class="button button-primary" value="continue">View group</button></form>
+        </dialog>
       </section>
 
       <section class="view auth-view" id="account" data-view="account" aria-labelledby="account-title" hidden>
-        <p class="eyebrow">Your account</p><h1 id="account-title">Welcome</h1>
+        <p class="eyebrow">Your account</p>
+        <h1 id="account-title">Welcome</h1>
         <div class="auth-card" data-auth-status-card hidden>
           <p class="form-message" data-auth-status role="alert">Checking your account…</p>
           <button class="button button-secondary" type="button" data-auth-retry>Try again</button>
@@ -154,15 +254,69 @@
             <button type="button" role="tab" aria-selected="true" data-auth-tab="login">Sign in</button>
             <button type="button" role="tab" aria-selected="false" data-auth-tab="register">Create account</button>
           </div>
-          <form data-auth-form="login"><h2>Return to Scripture</h2><p class="form-intro">Sign in and go directly to today’s reading.</p><label>Username<input name="username" autocomplete="username" required minlength="3" maxlength="32" pattern="[A-Za-z0-9][A-Za-z0-9._-]{2,31}"></label><label>Password<input name="password" type="password" autocomplete="current-password" required></label><button class="button button-primary" type="submit">Sign in</button></form>
-          <form data-auth-form="register" hidden><h2>Create your account</h2><p class="form-intro">No email address required.</p><label>Display name<input name="name" autocomplete="name" required minlength="2" maxlength="100"></label><label>Unique username <small>3–32 letters, numbers, dots, dashes, or underscores</small><input name="username" autocomplete="username" required minlength="3" maxlength="32" pattern="[A-Za-z0-9][A-Za-z0-9._-]{2,31}"></label><label>Password <small>At least 10 characters</small><input name="password" type="password" autocomplete="new-password" required minlength="10"></label><button class="button button-primary" type="submit">Create account</button></form>
+          <form data-auth-form="login">
+            <h2>Return to Scripture</h2>
+            <p class="form-intro">Sign in and go directly to today’s reading.</p><label>Username<input name="username"
+                autocomplete="username" required minlength="3" maxlength="32"
+                pattern="[A-Za-z0-9][A-Za-z0-9._-]{2,31}"></label><label>Password<input name="password" type="password"
+                autocomplete="current-password" required></label><button class="button button-primary"
+              type="submit">Sign in</button>
+          </form>
+          <form data-auth-form="register" hidden>
+            <h2>Create your account</h2>
+            <p class="form-intro">No email address required.</p><label>Display name<input name="name"
+                autocomplete="name" required minlength="2" maxlength="100"></label><label>Unique username <small>3–32
+                letters, numbers, dots, dashes, or underscores</small><input name="username" autocomplete="username"
+                required minlength="3" maxlength="32" pattern="[A-Za-z0-9][A-Za-z0-9._-]{2,31}"></label><label>Password
+              <small>At least 10 characters</small><input name="password" type="password" autocomplete="new-password"
+                required minlength="10"></label><button class="button button-primary" type="submit">Create
+              account</button>
+          </form>
           <p class="form-message" data-auth-message role="alert" hidden></p>
         </div>
         <div class="auth-card" data-auth-user hidden>
-          <span class="profile-avatar" data-profile-initial aria-hidden="true">A</span><img class="profile-avatar profile-avatar-image" data-profile-avatar alt="Your profile picture" hidden><h2 data-profile-name></h2><p class="muted" data-profile-username></p>
-          <form data-profile-form><label>Display name<input name="name" autocomplete="name" required minlength="2" maxlength="100"></label><label>Profile picture <small>JPG, PNG, GIF, or WebP</small><input name="avatar" type="file" accept="image/jpeg,image/png,image/gif,image/webp"></label><button class="button button-secondary" type="submit">Save profile</button></form>
-          <button class="text-button" type="button" data-logout>Sign out</button><p class="form-message" data-profile-message role="status" hidden></p>
+          <span class="profile-avatar" data-profile-initial aria-hidden="true">A</span><img
+            class="profile-avatar profile-avatar-image" data-profile-avatar alt="Your profile picture" hidden>
+          <h2 data-profile-name></h2>
+          <p class="muted" data-profile-username></p>
+          <form data-profile-form><label>Display name<input name="name" autocomplete="name" required minlength="2"
+                maxlength="100"></label><label>Profile picture <small>JPG, PNG, GIF, or WebP</small><input name="avatar"
+                type="file" accept="image/jpeg,image/png,image/gif,image/webp"></label><button
+              class="button button-secondary" type="submit">Save profile</button></form>
+          <button class="text-button" type="button" data-logout>Sign out</button>
+          <p class="form-message" data-profile-message role="status" hidden></p>
+          <section class="reminder-card" data-reminder hidden>
+            <h3>Morning reminder</h3>
+            <p data-reminder-detail>A quiet nudge each morning to open the day's reading.</p>
+            <button class="button button-secondary" type="button" data-reminder-toggle>Remind me each morning</button>
+            <p class="form-message" data-reminder-message role="status" hidden></p>
+          </section>
+          <section class="danger-zone">
+            <h3>Delete your account</h3>
+            <p>Removes your account and everything in it, permanently. Groups you own are handed to another member so
+              their reading is not disturbed.</p>
+            <button class="button button-danger" type="button" data-delete-account>Delete my account</button>
+          </section>
         </div>
+        <dialog class="success-dialog delete-account-dialog" data-delete-account-dialog aria-labelledby="delete-account-title">
+          <form data-delete-account-form>
+            <h2 id="delete-account-title">Delete your account?</h2>
+            <p class="muted">This cannot be undone. Deleting your account removes:</p>
+            <ul class="danger-list">
+              <li>your profile, username and picture</li>
+              <li>your reading progress and listening position</li>
+              <li>your notes, highlights and bookmarks</li>
+              <li>your membership of every group</li>
+            </ul>
+            <p class="muted">A group you own passes to its longest-standing member. A group with nobody else in it is deleted along with its plans.</p>
+            <label>Confirm your password<input name="password" type="password" autocomplete="current-password" required></label>
+            <p class="form-message" data-delete-account-message role="alert" hidden></p>
+            <div class="group-actions">
+              <button class="button button-danger" type="submit">Delete permanently</button>
+              <button class="button button-secondary" type="button" data-delete-account-cancel>Keep my account</button>
+            </div>
+          </form>
+        </dialog>
         <footer class="account-legal" aria-label="Legal and support">
           <nav aria-label="Legal"><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></nav>
           <p>Questions or support? <a href="mailto:info@abiden.me">info@abiden.me</a></p>
@@ -171,7 +325,8 @@
     </main>
 
     <nav class="bottom-nav" aria-label="Primary navigation">
-      <a href="#today" data-route="today" aria-current="page"><span class="nav-icon" aria-hidden="true">⌂</span><span>Today</span></a>
+      <a href="#today" data-route="today" aria-current="page"><span class="nav-icon"
+          aria-hidden="true">⌂</span><span>Today</span></a>
       <a href="#bible" data-route="bible"><span class="nav-icon" aria-hidden="true">▤</span><span>Bible</span></a>
       <a href="#plans" data-route="plans"><span class="nav-icon" aria-hidden="true">☑</span><span>Plans</span></a>
       <a href="#group" data-route="group"><span class="nav-icon" aria-hidden="true">♙</span><span>Group</span></a>
@@ -179,11 +334,22 @@
   </div>
   <dialog class="audio-dialog" data-audio-dialog aria-labelledby="audio-title">
     <div class="audio-sheet">
-      <div class="audio-heading"><div><p class="eyebrow">Listen</p><h2 id="audio-title" data-audio-title>Scripture audio</h2></div><button class="icon-button" type="button" data-audio-close aria-label="Close audio player">×</button></div>
+      <div class="audio-heading">
+        <div>
+          <p class="eyebrow">Listen</p>
+          <h2 id="audio-title" data-audio-title>Scripture audio</h2>
+        </div><button class="icon-button" type="button" data-audio-close aria-label="Close audio player">×</button>
+      </div>
       <label>Audio version<select data-audio-version hidden></select></label>
       <audio controls preload="metadata">Your browser does not support Scripture audio.</audio>
       <button class="button button-primary" type="button" data-audio-read hidden>Read chapter aloud</button>
-      <div class="audio-options"><label>Playback speed<select data-audio-rate><option value="0.75">0.75×</option><option value="1" selected>1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></label></div>
+      <div class="audio-options"><label>Playback speed<select data-audio-rate>
+            <option value="0.75">0.75×</option>
+            <option value="1" selected>1×</option>
+            <option value="1.25">1.25×</option>
+            <option value="1.5">1.5×</option>
+            <option value="2">2×</option>
+          </select></label></div>
       <p data-audio-status role="status" aria-live="polite">Choose a chapter to listen.</p>
       <p class="audio-attribution" data-audio-attribution></p>
     </div>
@@ -191,4 +357,5 @@
   <div class="toast" role="status" aria-live="polite" aria-atomic="true" hidden></div>
   <script type="module" src="assets/js/app.js"></script>
 </body>
+
 </html>

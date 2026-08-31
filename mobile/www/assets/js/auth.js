@@ -44,6 +44,43 @@ export function initAuth() {
     reader.readAsDataURL(file);
   });
   document.querySelector('[data-profile-form]')?.addEventListener('submit', async (event) => { event.preventDefault(); const form = event.currentTarget; const submit = form.querySelector('[type="submit"]'); submit.disabled = true; try { const formData = new FormData(form); const avatar = await imageData(formData.get('avatar')); const body = { name: formData.get('name') }; if (avatar !== undefined) body.avatar = avatar; const data = await api('user/profile.php', { method: 'PATCH', body }); render(data.user); form.elements.avatar.value = ''; message(profileMessage, 'Profile updated.', true); } catch (error) { message(profileMessage, error.message); } finally { submit.disabled = false; } });
+  const deleteDialog = document.querySelector('[data-delete-account-dialog]');
+  const deleteMessage = document.querySelector('[data-delete-account-message]');
+  const describeDeletion = (summary) => {
+    const parts = ['Your account has been deleted.'];
+    if (summary?.groups_transferred?.length) parts.push(`${summary.groups_transferred.join(' and ')} now belongs to another member.`);
+    if (summary?.groups_deleted?.length) parts.push(`${summary.groups_deleted.join(' and ')} had no other members and was deleted.`);
+    return parts.join(' ');
+  };
+  document.querySelector('[data-delete-account]')?.addEventListener('click', () => {
+    if (!deleteDialog) return;
+    deleteDialog.querySelector('form').reset(); message(deleteMessage, ''); deleteDialog.showModal();
+  });
+  document.querySelector('[data-delete-account-cancel]')?.addEventListener('click', () => deleteDialog?.close());
+  document.querySelector('[data-delete-account-form]')?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget; const submit = form.querySelector('[type="submit"]');
+    submit.disabled = true; message(deleteMessage, '');
+    try {
+      const summary = await api('user/account.php', { method: 'DELETE', body: { password: form.elements.password.value } });
+      deleteDialog.close();
+      form.reset();
+      // Anything held for the account that no longer exists has to go with it,
+      // or the next visitor on this device inherits a pending invitation and a
+      // reading position that are not theirs.
+      try { localStorage.removeItem('feedMySheep.pendingInvite'); localStorage.removeItem('feedMySheep.currentPassage'); } catch { /* storage can be unavailable */ }
+      render(null);
+      // The server ended the session, so a fresh token is needed before the
+      // sign-in form on this same page can be used again.
+      await initializeCsrf();
+      window.location.hash = 'account';
+      message(authMessage, describeDeletion(summary), true);
+    } catch (error) {
+      message(deleteMessage, error.message);
+    } finally {
+      submit.disabled = false;
+    }
+  });
   document.querySelector('[data-logout]')?.addEventListener('click', async () => { try { await api('auth/logout.php', { method: 'POST', body: {} }); render(null); await initializeCsrf(); } catch (error) { message(profileMessage, error.message); } });
   // An unresolved account check is not the same thing as being signed out. Showing the
   // sign-in form after a failed request left the account page contradicting the rest of

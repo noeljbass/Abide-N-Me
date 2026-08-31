@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "sync:www": "node scripts/sync-www.mjs",
-    "sync": "npm run sync:www && npx cap sync",
+    "sync": "npm run sync:www && npx cap sync && node scripts/android-extras.mjs",
     "assets": "npx @capacitor/assets generate --iconBackgroundColor \"#f7f3ea\" --iconBackgroundColorDark \"#f7f3ea\" --splashBackgroundColor \"#f7f3ea\" --splashBackgroundColorDark \"#1a201d\"",
     "open:android": "npx cap open android",
     "open:ios": "npx cap open ios",
@@ -23,6 +23,7 @@
     "@capacitor/core": "^7.0.0",
     "@capacitor/ios": "^7.0.0",
     "@capacitor/keyboard": "^7.0.0",
+    "@capacitor/local-notifications": "^7.0.7",
     "@capacitor/splash-screen": "^7.0.0",
     "@capacitor/status-bar": "^7.0.0"
   },

@@ -151,7 +151,7 @@
             <label>Description <small>Optional</small><textarea name="description" maxlength="5000"></textarea></label>
             <fieldset>
               <legend>Build mode</legend><label><input type="radio" name="mode" value="automatic" checked>
-                Automatic</label><label><input type="radio" name="mode" value="manual"> Manual</label>
+                Automatic</label><label><input type="radio" name="mode" value="manual"> Manual</label><label><input type="radio" name="mode" value="json"> JSON</label>
             </fieldset>
             <label>Start date<input type="date" name="start_date" required></label>
             <input type="hidden" name="timezone" data-plan-timezone value="UTC">
@@ -171,6 +171,17 @@
             <section data-manual-fields hidden>
               <div data-manual-days></div><button class="button button-secondary" type="button" data-add-plan-day>+ Add
                 day</button>
+            </section>
+            <section data-json-fields hidden>
+              <div class="json-heading">
+                <label for="plan-json">Plan JSON <small>Paste a generated plan</small></label>
+                <button class="link-button" type="button" data-json-generate>Generate JSON ↗</button>
+              </div>
+              <textarea id="plan-json" data-plan-json rows="10"
+                placeholder='{ "name": "Advent in Luke", "days": [ { "passages": ["Luke 1:1-25"] } ] }'></textarea>
+              <button class="button button-secondary" type="button" data-json-preview-button>Preview this plan</button>
+              <p class="form-message" data-json-message role="alert" hidden></p>
+              <div class="json-preview" data-json-preview hidden></div>
             </section>
             <button class="button button-primary" type="submit">Create and assign plan</button>
           </form>
@@ -320,6 +331,7 @@
         <footer class="account-legal" aria-label="Legal and support">
           <nav aria-label="Legal"><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Use</a></nav>
           <p>Questions or support? <a href="mailto:info@abiden.me">info@abiden.me</a></p>
+          <p><a href="https://abiden.me/download/abide-n-me.apk" download="abide-n-me.apk">Download the latest Android app</a></p>
         </footer>
       </section>
     </main>

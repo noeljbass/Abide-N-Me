@@ -268,6 +268,30 @@ export const reminder = {
   },
 };
 
+/* ------------------------------------------------------- external links ---- */
+
+/**
+ * Opens a link that belongs to someone else's site.
+ *
+ * In the app this hands the URL to the platform's in-app browser, so the person
+ * can read it and come straight back with a tap rather than being thrown into a
+ * separate browser app and having to find their way home. In a browser it is an
+ * ordinary new tab. If the plugin is missing for any reason the new tab is still
+ * the fallback, so the link never simply does nothing.
+ */
+export async function openExternal(url) {
+  const browser = plugin('Browser');
+  if (browser) {
+    try {
+      await browser.open({ url, presentationStyle: 'popover' });
+      return;
+    } catch {
+      // Fall through to the browser behaviour below.
+    }
+  }
+  window.open(url, '_blank', 'noopener');
+}
+
 /**
  * Wires up the pieces of native behaviour a web page gets for free:
  * dismissing the launch screen, tinting the status bar, the Android back

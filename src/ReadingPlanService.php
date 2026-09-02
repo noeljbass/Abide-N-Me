@@ -36,9 +36,25 @@ final class ReadingPlanService
 
         $this->db->beginTransaction();
         try {
-            $shift = (new \DateTimeImmutable($plan['start_date']))->diff($date)->format('%r%a');
+            $shift = (int) (new \DateTimeImmutable($plan['start_date']))->diff($date)->format('%r%a');
             $this->db->prepare('UPDATE reading_plans SET name=?,description=?,start_date=? WHERE id=?')->execute([$name, $description ?: null, $startDate, $plan['id']]);
-            if ((int) $shift !== 0) $this->db->prepare('UPDATE plan_days SET scheduled_date=DATE_ADD(scheduled_date, INTERVAL ? DAY) WHERE plan_id=?')->execute([(int) $shift, $plan['id']]);
+            if ($shift !== 0) {
+                // plan_days carries a unique key on (plan_id, scheduled_date), and MySQL
+                // enforces it row by row during an UPDATE rather than at the end of the
+                // statement. Moving every day forward by one therefore collides with the
+                // day already sitting on the destination date, which is what made any
+                // change of start date fail. Updating in the order that frees each
+                // destination first avoids the collision: from the last day when moving
+                // forward, from the first when moving back.
+                $order = $shift > 0 ? 'DESC' : 'ASC';
+                // $shift is cast to int above, so it is safe to place in the statement.
+                // A placeholder cannot be used here: the interval is part of the
+                // expression, not a value.
+                $this->db->prepare(
+                    "UPDATE plan_days SET scheduled_date = DATE_ADD(scheduled_date, INTERVAL {$shift} DAY)
+                     WHERE plan_id = ? ORDER BY scheduled_date {$order}"
+                )->execute([$plan['id']]);
+            }
             $this->db->commit();
             return ['id' => $input['plan_id'], 'name' => $name, 'description' => $description ?: null, 'start_date' => $startDate];
         } catch (Throwable $exception) {
